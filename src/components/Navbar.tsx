@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const navLinks = [
 { href: "/", label: "Home" },
@@ -36,10 +37,14 @@ export default function Navbar() {
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold !w-full !h-full">
-              <span className="text-white">MUSCLE</span>
-              <span className="text-red-600"> TECH</span>
-            </div>
+            <Image 
+              src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/logo-1765285879734.avif"
+              alt="Muscle Tech Logo"
+              width={180}
+              height={60}
+              className="h-12 w-auto object-contain"
+              priority
+            />
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
