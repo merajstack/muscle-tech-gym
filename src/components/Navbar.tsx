@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 const navLinks = [
-{ href: "/", label: "Home" },
 { href: "/fitness", label: "Fitness" },
 { href: "/amenities", label: "Amenities & Services" },
 { href: "/trainers", label: "Trainers" },
@@ -40,9 +39,9 @@ export default function Navbar() {
             <Image 
               src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/logo-1765285879734.avif"
               alt="Muscle Tech Logo"
-              width={180}
-              height={60}
-              className="h-12 w-auto object-contain"
+              width={220}
+              height={75}
+              className="h-16 w-auto object-contain"
               priority
             />
           </Link>
