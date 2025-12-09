@@ -76,25 +76,38 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Stats Section */}
+        {/* Brand Story Section */}
         <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800">
           <div className="container mx-auto px-4 sm:px-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-              {[
-                { number: "5000+", label: "Members" },
-                { number: "50+", label: "Expert Trainers" },
-                { number: "100+", label: "Equipment" },
-                { number: "24/7", label: "Access" },
-              ].map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-4xl sm:text-5xl md:text-6xl font-black text-red-600 mb-2">
-                    {stat.number}
-                  </div>
-                  <div className="text-gray-400 font-medium uppercase tracking-wider text-xs sm:text-sm md:text-base">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+              <div>
+                <h2 
+                  className="text-4xl sm:text-5xl md:text-6xl text-white mb-6"
+                  style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
+                >
+                  BRAND <span className="text-red-600">STORY</span>
+                </h2>
+                <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
+                  At MuscleTech, we believe strength is built — not gifted.
+                </p>
+                <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
+                  For over a decade, we've combined cutting-edge sports science, premium ingredients, and unmatched performance testing to create products trusted by athletes worldwide.
+                </p>
+                <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
+                  Whether you're chasing muscle growth, fat loss, endurance, or total body transformation, we deliver innovations that help you push harder, recover faster, and achieve more.
+                </p>
+                <p className="text-red-600 font-bold text-lg sm:text-xl mt-6">
+                  Stronger today. Unstoppable tomorrow.
+                </p>
+              </div>
+              <div className="relative h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden">
+                <Image 
+                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/friends-1765303075554.webp"
+                  alt="MuscleTech Team"
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </section>
