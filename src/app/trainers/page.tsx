@@ -17,22 +17,9 @@ const trainersData = [
     specialty: "Yoga & Flexibility",
     experience: "10 Years Experience",
   },
-  {
-    id: 3,
-    name: "DAVID CHEN",
-    specialty: "CrossFit & HIIT",
-    experience: "12 Years Experience",
-  },
-  {
-    id: 4,
-    name: "EMMA RODRIGUEZ",
-    specialty: "Nutrition & Wellness",
-    experience: "8 Years Experience",
-  },
 ];
 
 export default function TrainersPage() {
-  const [revealedCards, setRevealedCards] = useState(0);
   const [isPinned, setIsPinned] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -52,17 +39,9 @@ export default function TrainersPage() {
           const totalScroll = sectionHeight - windowHeight;
           const progress = Math.min(scrolled / totalScroll, 1);
           setScrollProgress(progress);
-
-          const cardsToReveal = Math.min(
-            trainersData.length,
-            Math.floor(progress * (trainersData.length + 2))
-          );
-          setRevealedCards(cardsToReveal);
         } else if (rect.top > 0) {
-          setRevealedCards(0);
           setScrollProgress(0);
         } else {
-          setRevealedCards(trainersData.length);
           setScrollProgress(1);
         }
       }
@@ -93,7 +72,7 @@ export default function TrainersPage() {
         <section
           ref={sectionRef}
           className="relative"
-          style={{ height: `${500}vh` }}
+          style={{ height: `${300}vh` }}
         >
           <div
             className={`${
@@ -108,7 +87,7 @@ export default function TrainersPage() {
             />
 
             <div className="container mx-auto px-4 sm:px-6 relative z-10">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
                 {trainersData.map((trainer, index) => {
                   const totalCards = trainersData.length;
                   const revealStart = index / (totalCards + 1);
