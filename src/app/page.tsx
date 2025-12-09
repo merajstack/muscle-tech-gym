@@ -111,6 +111,70 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Why Choose Us Section */}
+        <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+              <div className="relative h-[400px] sm:h-[500px] md:h-[600px] rounded-lg overflow-hidden order-2 md:order-1">
+                <Image 
+                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/reciption-1765303353505.webp"
+                  alt="Muscle Tech Gym Interior"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6">
+                  <p className="text-red-600 font-bold text-xl sm:text-2xl mb-2">
+                    Join the Gym That Invests in You
+                  </p>
+                  <p className="text-gray-300 text-sm sm:text-base">
+                    Because here, it's not just about lifting weights —<br />
+                    it's about lifting your entire life.
+                  </p>
+                </div>
+              </div>
+              <div className="order-1 md:order-2">
+                <h2 
+                  className="text-4xl sm:text-5xl md:text-6xl text-white mb-8"
+                  style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
+                >
+                  WHY <span className="text-red-600">CHOOSE US</span>
+                </h2>
+                <div className="space-y-5">
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-1">Elite Equipment, Built for Performance</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">Train with commercial-grade machines, power racks, free weights, and functional tools designed for serious results. Every zone is optimized for strength, endurance, and mobility.</p>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-1">Personalized Coaching That Delivers</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">Our certified trainers craft workout plans tailored to your goals — whether you want to lose fat, build muscle, improve stamina, or simply get healthier.</p>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-1">A Motivating Environment That Pushes You Forward</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">Step into a space where energy stays high, discipline is respected, and progress is celebrated. We've built a community where everyone works hard and grows together.</p>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-1">Results-Focused Training Programs</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">Every training style — strength, cardio, HIIT, or functional — is backed by proven methods to help you see and feel real changes faster.</p>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-1">Clean, Safe & Comfortable Space</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">Our gym is maintained daily, sanitized regularly, and equipped with proper ventilation to ensure a safe and comfortable workout experience.</p>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-1">Flexible Membership Plans</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">Choose from a range of membership plans designed to fit your lifestyle, not the other way around.</p>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-lg mb-1">Trackable Progress</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">Monitor your improvements with trainer check-ins, body assessments, and progress-based adjustments. We help you stay accountable and motivated.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </>
   );
