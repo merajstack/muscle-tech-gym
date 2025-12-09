@@ -53,8 +53,7 @@ export default function Home() {
               className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 sm:mb-6 tracking-tight"
               style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
             >
-              UNLEASH YOUR
-              <span className="block text-red-600">POTENTIAL</span>
+              MUSCLE TECH
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
               Transform your body and mind at the most advanced fitness facility

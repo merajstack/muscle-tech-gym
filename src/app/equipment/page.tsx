@@ -27,7 +27,7 @@ const equipmentCategories = [
     items: [
       { name: "Battle Ropes", description: "Heavy-duty training ropes", image: "https://shop.lifefitness.com/cdn/shop/products/outdoor-workout-battle-rope-1000x1000_1200x1200.jpg?v=1748945255" },
       { name: "Kettlebells", description: "8 kg to 48 kg kettlebells", image: "https://braingain.fit/cdn/shop/articles/Choosing_the_Right_Kettlebell_a61de227-af63-4731-b2aa-82548d92ab83.webp?v=1755173608&width=1536" },
-      { name: "Plyometric Boxes", description: "Adjustable jump boxes", image: "https://www.resilite.com/cdn/shop/files/Foam_Plyo_Boxes_-_Six_Heights-in-One_Foam_Plyo_Box-_Resilite_Mats-1450655.jpg?v=1721067641&width=1200" },
+      { name: "Plyometric Boxes", description: "Adjustable jump boxes", image: "https://assets.roguefitness.com/f_auto,q_auto,c_limit,w_1600,b_rgb:ffffff/catalog/Conditioning/Plyo%20Boxes%20/Foam%20Plyoboxes/XX4095/XX4095-WEB2_vfqr2m.png" },
       { name: "Suspension Trainers", description: "TRX training systems", image: "https://www.eliteprofitca.com/wp-content/uploads/2021/01/20210313_061519.jpg" },
     ],
   },
