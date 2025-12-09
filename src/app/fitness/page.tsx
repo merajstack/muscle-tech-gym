@@ -25,8 +25,8 @@ export default function FitnessPage() {
     const handleScroll = () => {
       if (triggerRef.current) {
         const rect = triggerRef.current.getBoundingClientRect();
-        const triggerPoint = window.innerHeight * 0.6;
-        const transitionRange = window.innerHeight * 0.4;
+        const triggerPoint = window.innerHeight * 0.4;
+        const transitionRange = window.innerHeight * 0.5;
         
         // Calculate smooth transition progress
         const distanceFromTrigger = triggerPoint - rect.top;
@@ -49,21 +49,21 @@ export default function FitnessPage() {
       <Navbar />
       <main className="min-h-screen bg-black pt-20">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-b from-black to-zinc-900">
-          <div className="container mx-auto px-6">
-            <h1 className="text-6xl md:text-7xl font-black text-white mb-4">
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-black to-zinc-900">
+          <div className="container mx-auto px-4 sm:px-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
               FITNESS <span className="text-red-600">PROGRAMS</span>
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl">
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl">
               Discover our comprehensive range of fitness programs designed for every goal
             </p>
           </div>
         </section>
 
         {/* Staggered Triangle Layout with Card Replacement */}
-        <section className="py-20 min-h-screen" ref={triggerRef}>
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <section className="py-12 sm:py-16 md:py-20 min-h-screen" ref={triggerRef}>
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               {displayCategories.map((category, index) => {
                 const exitOpacity = showReplacement ? 0 : 1 - transitionProgress;
                 const enterOpacity = showReplacement ? transitionProgress * 2 - 1 : 0;
@@ -78,7 +78,7 @@ export default function FitnessPage() {
                     key={category.id}
                     className="transition-all duration-700 ease-out"
                     style={{
-                      marginTop: `${index * 80}px`,
+                      marginTop: `${index * 60}px`,
                       opacity: currentOpacity,
                       transform: `translateY(${currentTransform}px) scale(${0.95 + currentOpacity * 0.05})`,
                       transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
@@ -86,23 +86,23 @@ export default function FitnessPage() {
                   >
                     <div className="bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-500">
                       {/* Image Upload Placeholder */}
-                      <div className="relative h-64 bg-zinc-800 flex items-center justify-center cursor-pointer overflow-hidden">
+                      <div className="relative h-48 sm:h-56 md:h-64 bg-zinc-800 flex items-center justify-center cursor-pointer overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
                         <div className="text-center z-20">
-                          <Upload className="w-12 h-12 text-zinc-600 mx-auto mb-2 group-hover:text-zinc-500 transition-colors" />
-                          <p className="text-zinc-600 text-sm group-hover:text-zinc-500 transition-colors">
+                          <Upload className="w-10 h-10 sm:w-12 sm:h-12 text-zinc-600 mx-auto mb-2 group-hover:text-zinc-500 transition-colors" />
+                          <p className="text-zinc-600 text-xs sm:text-sm group-hover:text-zinc-500 transition-colors">
                             Upload Image
                           </p>
                         </div>
                       </div>
 
                       {/* Card Content */}
-                      <div className="p-6">
-                        <h3 className="text-3xl font-black text-white mb-2 group-hover:text-red-600 transition-colors duration-300">
+                      <div className="p-4 sm:p-6">
+                        <h3 className="text-2xl sm:text-3xl font-black text-white mb-2 group-hover:text-red-600 transition-colors duration-300">
                           {category.title}
                         </h3>
-                        <p className="text-gray-400 mb-4">{category.description}</p>
-                        <button className="w-full py-3 bg-red-600 text-white font-bold rounded-sm hover:bg-red-700 transition-colors duration-300">
+                        <p className="text-gray-400 mb-4 text-sm sm:text-base">{category.description}</p>
+                        <button className="w-full py-2 sm:py-3 bg-red-600 text-white font-bold text-sm sm:text-base rounded-sm hover:bg-red-700 transition-colors duration-300">
                           LEARN MORE
                         </button>
                       </div>
@@ -112,8 +112,8 @@ export default function FitnessPage() {
               })}
             </div>
 
-            <div className="text-center mt-16">
-              <p className="text-gray-500 text-sm">
+            <div className="text-center mt-12 sm:mt-16">
+              <p className="text-gray-500 text-xs sm:text-sm">
                 {showReplacement ? "Showing advanced programs" : "Scroll to see more programs"}
               </p>
             </div>
@@ -121,13 +121,13 @@ export default function FitnessPage() {
         </section>
 
         {/* Additional Content for Scroll */}
-        <section className="py-40 bg-zinc-900">
-          <div className="container mx-auto px-6 text-center">
-            <h2 className="text-4xl font-black text-white mb-4">
+        <section className="py-20 sm:py-32 md:py-40 bg-zinc-900">
+          <div className="container mx-auto px-4 sm:px-6 text-center">
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               READY TO <span className="text-red-600">START?</span>
             </h2>
-            <p className="text-gray-400 mb-8">Join thousands of members achieving their goals</p>
-            <button className="px-8 py-4 bg-red-600 text-white font-bold text-lg rounded-sm hover:bg-red-700 transition-colors duration-300">
+            <p className="text-gray-400 mb-8 text-sm sm:text-base">Join thousands of members achieving their goals</p>
+            <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-colors duration-300">
               GET STARTED TODAY
             </button>
           </div>
