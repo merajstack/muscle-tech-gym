@@ -3,11 +3,27 @@
 import Navbar from "@/components/Navbar";
 import { Upload } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 
 const initialCategories = [
-  { id: 1, title: "GYM", description: "State-of-the-art equipment" },
-  { id: 2, title: "CROSSFIT", description: "High-intensity functional training" },
-  { id: 3, title: "CARDIO", description: "Burn calories effectively" },
+  { 
+    id: 1, 
+    title: "GYM", 
+    description: "State-of-the-art equipment",
+    image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/eqp1-1765287853827.avif"
+  },
+  { 
+    id: 2, 
+    title: "CROSSFIT", 
+    description: "High-intensity functional training",
+    image: "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/eqp2-1765287854014.webp"
+  },
+  { 
+    id: 3, 
+    title: "CARDIO", 
+    description: "Burn calories effectively",
+    image: "https://fitgearsolutions.com/wp-content/uploads/2025/01/C1_JF_WithLogo-scaled.webp"
+  },
 ];
 
 const replacementCategories = [
@@ -85,15 +101,27 @@ export default function FitnessPage() {
                     }}
                   >
                     <div className="bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-500">
-                      {/* Image Upload Placeholder */}
-                      <div className="relative h-48 sm:h-56 md:h-64 bg-zinc-800 flex items-center justify-center cursor-pointer overflow-hidden">
+                      {/* Image */}
+                      <div className="relative h-48 sm:h-56 md:h-64 bg-zinc-800 overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
-                        <div className="text-center z-20">
-                          <Upload className="w-10 h-10 sm:w-12 sm:h-12 text-zinc-600 mx-auto mb-2 group-hover:text-zinc-500 transition-colors" />
-                          <p className="text-zinc-600 text-xs sm:text-sm group-hover:text-zinc-500 transition-colors">
-                            Upload Image
-                          </p>
-                        </div>
+                        {'image' in category ? (
+                          <Image
+                            src={category.image}
+                            alt={category.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                          />
+                        ) : (
+                          <div className="flex items-center justify-center h-full cursor-pointer">
+                            <div className="text-center z-20">
+                              <Upload className="w-10 h-10 sm:w-12 sm:h-12 text-zinc-600 mx-auto mb-2 group-hover:text-zinc-500 transition-colors" />
+                              <p className="text-zinc-600 text-xs sm:text-sm group-hover:text-zinc-500 transition-colors">
+                                Upload Image
+                              </p>
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* Card Content */}
