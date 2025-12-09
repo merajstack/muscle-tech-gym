@@ -55,8 +55,11 @@ export default function TrainersPage() {
           const progress = Math.min(scrolled / totalScroll, 1);
           setScrollProgress(progress);
 
-          // Reveal cards based on scroll progress
-          const cardsToReveal = Math.floor(progress * trainersData.length);
+          // Reveal cards based on scroll progress - smoother calculation
+          const cardsToReveal = Math.min(
+            trainersData.length,
+            Math.floor(progress * (trainersData.length + 1))
+          );
           setRevealedCards(cardsToReveal);
         } else if (rect.top > 0) {
           // Before section
@@ -96,7 +99,7 @@ export default function TrainersPage() {
         <section
           ref={sectionRef}
           className="relative"
-          style={{ height: `${300}vh` }} // Extra height for scroll-jacking effect
+          style={{ height: `${350}vh` }}
         >
           <div
             className={`${
@@ -105,7 +108,7 @@ export default function TrainersPage() {
           >
             {/* Background overlay that fades */}
             <div
-              className="absolute inset-0 bg-black transition-opacity duration-700"
+              className="absolute inset-0 bg-black transition-opacity duration-1000"
               style={{
                 opacity: 1 - scrollProgress * 0.3,
               }}
@@ -115,21 +118,24 @@ export default function TrainersPage() {
             <div className="container mx-auto px-6 relative z-10">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {trainersData.map((trainer, index) => {
-                  const isRevealed = index < revealedCards;
+                  // Improved card reveal calculation
+                  const revealThreshold = index / trainersData.length;
+                  const revealRange = 1 / trainersData.length;
                   const cardProgress = Math.max(
                     0,
-                    Math.min(1, (scrollProgress * trainersData.length - index) / 1)
+                    Math.min(1, (scrollProgress - revealThreshold) / revealRange)
                   );
+                  
+                  const isRevealed = scrollProgress > revealThreshold;
 
                   return (
                     <div
                       key={trainer.id}
                       className="transition-all duration-1000 ease-out"
                       style={{
-                        opacity: isRevealed ? cardProgress : 0,
-                        transform: `translateY(${isRevealed ? 0 : 50}px) scale(${
-                          isRevealed ? 1 : 0.9
-                        })`,
+                        opacity: cardProgress,
+                        transform: `translateY(${(1 - cardProgress) * 50}px) scale(${0.9 + cardProgress * 0.1})`,
+                        transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
                       }}
                     >
                       <div className="bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-300">
@@ -164,14 +170,24 @@ export default function TrainersPage() {
               {/* Progress Indicator */}
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
                 <div className="flex items-center gap-2">
-                  {trainersData.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        index < revealedCards ? "w-8 bg-red-600" : "w-2 bg-zinc-700"
-                      }`}
-                    />
-                  ))}
+                  {trainersData.map((_, index) => {
+                    const dotProgress = Math.max(
+                      0,
+                      Math.min(1, (scrollProgress * trainersData.length) - index)
+                    );
+                    
+                    return (
+                      <div
+                        key={index}
+                        className="h-2 rounded-full transition-all duration-500"
+                        style={{
+                          width: `${8 + dotProgress * 24}px`,
+                          backgroundColor: dotProgress > 0 ? '#dc2626' : '#3f3f46',
+                          opacity: 0.3 + dotProgress * 0.7,
+                        }}
+                      />
+                    );
+                  })}
                 </div>
               </div>
             </div>
