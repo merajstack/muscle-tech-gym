@@ -2,8 +2,32 @@
 
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {
+    const requestFullscreen = async () => {
+      try {
+        if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (err) {
+        console.log("Fullscreen request failed or was denied");
+      }
+    };
+    
+    const handleClick = () => {
+      requestFullscreen();
+      document.removeEventListener("click", handleClick);
+    };
+    
+    document.addEventListener("click", handleClick, { once: true });
+    
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -25,7 +49,10 @@ export default function Home() {
 
           {/* Hero Content */}
           <div className="relative z-20 text-center px-4 sm:px-6 max-w-5xl">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-4 sm:mb-6 tracking-tight">
+            <h1 
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 sm:mb-6 tracking-tight"
+              style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
+            >
               UNLEASH YOUR
               <span className="block text-red-600">POTENTIAL</span>
             </h1>

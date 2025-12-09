@@ -27,9 +27,9 @@ const initialCategories = [
 ];
 
 const replacementCategories = [
-  { id: 4, title: "KICKBOXING", description: "Combat fitness training" },
-  { id: 5, title: "MARTIAL ARTS", description: "Discipline and strength" },
-  { id: 6, title: "YOGA", description: "Flexibility and mindfulness" },
+  { id: 4, title: "KICKBOXING", description: "Combat fitness training", image: "https://yokkao.com/cdn/shop/files/intro1.jpg?v=1626149693&width=1620" },
+  { id: 5, title: "MARTIAL ARTS", description: "Discipline and strength", image: "https://cdn.britannica.com/07/145407-050-8DBD77E9/belts.jpg" },
+  { id: 6, title: "YOGA", description: "Flexibility and mindfulness", image: "https://st.perplexity.ai/estatic/0b226c450798410ac541646c86ec31afd840e5beab817a5d84fa821e7db61981ec84c3b4a3f072a7a2e1899c9fb06c6e3b16ca281d983c1633625c9b220edc3f0f7852a42c0d8cc71f1f48adb86614461afb6f34723a8d0797425ebba482d75f" },
 ];
 
 export default function FitnessPage() {

@@ -44,36 +44,31 @@ export default function TrainersPage() {
         const sectionHeight = sectionRef.current.offsetHeight;
         const windowHeight = window.innerHeight;
 
-        // Pin when section enters viewport
         const shouldPin = rect.top <= 0 && rect.bottom > windowHeight;
         setIsPinned(shouldPin);
 
         if (shouldPin) {
-          // Calculate scroll progress through the pinned section
           const scrolled = Math.abs(rect.top);
           const totalScroll = sectionHeight - windowHeight;
           const progress = Math.min(scrolled / totalScroll, 1);
           setScrollProgress(progress);
 
-          // Reveal cards based on scroll progress with extended visibility for 4th card
           const cardsToReveal = Math.min(
             trainersData.length,
-            Math.floor(progress * (trainersData.length + 1.5))
+            Math.floor(progress * (trainersData.length + 2))
           );
           setRevealedCards(cardsToReveal);
         } else if (rect.top > 0) {
-          // Before section
           setRevealedCards(0);
           setScrollProgress(0);
         } else {
-          // After section
           setRevealedCards(trainersData.length);
           setScrollProgress(1);
         }
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -82,31 +77,29 @@ export default function TrainersPage() {
     <>
       <Navbar />
       <main className="bg-black">
-        {/* Hero Section */}
-        <section className="min-h-screen pt-20 flex items-center bg-gradient-to-b from-black to-zinc-900">
-          <div className="container mx-auto px-4 sm:px-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
-              EXPERT <span className="text-red-600">TRAINERS</span>
+        {/* Hero Section - Minimal centered design matching reference */}
+        <section className="h-screen flex items-center justify-center bg-black">
+          <div className="text-center">
+            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter">
+              TRAINERS
             </h1>
-            <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mb-8">
-              Meet our certified professionals dedicated to your success
+            <p className="text-gray-500 text-base sm:text-lg mt-6 tracking-wide">
+              Scroll to reveal our elite team
             </p>
-            <p className="text-gray-500 text-sm sm:text-base">Scroll down to meet the team</p>
           </div>
         </section>
 
-        {/* Scroll-Jacking Pinned Trainers Section - Increased height for 4th card visibility */}
+        {/* Scroll-Jacking Pinned Trainers Section */}
         <section
           ref={sectionRef}
           className="relative"
-          style={{ height: `${450}vh` }}
+          style={{ height: `${500}vh` }}
         >
           <div
             className={`${
               isPinned ? "fixed top-0 left-0 right-0" : "absolute top-0 left-0 right-0"
             } h-screen bg-black flex items-center justify-center overflow-hidden`}
           >
-            {/* Background overlay that fades */}
             <div
               className="absolute inset-0 bg-black transition-opacity duration-1000"
               style={{
@@ -114,35 +107,30 @@ export default function TrainersPage() {
               }}
             />
 
-            {/* Trainers Grid */}
             <div className="container mx-auto px-4 sm:px-6 relative z-10">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {trainersData.map((trainer, index) => {
-                  // Extended reveal calculation for smoother 4th card appearance
                   const totalCards = trainersData.length;
-                  const revealStart = index / (totalCards + 0.5);
-                  const revealEnd = (index + 1.2) / (totalCards + 0.5);
+                  const revealStart = index / (totalCards + 1);
+                  const revealEnd = (index + 1.5) / (totalCards + 1);
                   const revealRange = revealEnd - revealStart;
                   
                   const cardProgress = Math.max(
                     0,
                     Math.min(1, (scrollProgress - revealStart) / revealRange)
                   );
-                  
-                  const isRevealed = scrollProgress > revealStart;
 
                   return (
                     <div
                       key={trainer.id}
-                      className="transition-all duration-1000 ease-out"
+                      className="transition-all duration-[1200ms] ease-out"
                       style={{
                         opacity: cardProgress,
-                        transform: `translateY(${(1 - cardProgress) * 50}px) scale(${0.9 + cardProgress * 0.1})`,
-                        transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                        transform: `translateY(${(1 - cardProgress) * 80}px) scale(${0.85 + cardProgress * 0.15})`,
+                        transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
                       }}
                     >
                       <div className="bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-300">
-                        {/* Image Upload Placeholder */}
                         <div className="relative h-64 sm:h-72 md:h-80 bg-zinc-800 flex items-center justify-center cursor-pointer">
                           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
                           <div className="text-center z-20">
@@ -153,7 +141,6 @@ export default function TrainersPage() {
                           </div>
                         </div>
 
-                        {/* Trainer Info */}
                         <div className="p-4 sm:p-6">
                           <h3 className="text-xl sm:text-2xl font-black text-white mb-2 group-hover:text-red-600 transition-colors">
                             {trainer.name}
@@ -170,13 +157,12 @@ export default function TrainersPage() {
                 })}
               </div>
 
-              {/* Progress Indicator */}
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
                 <div className="flex items-center gap-2">
                   {trainersData.map((_, index) => {
                     const dotProgress = Math.max(
                       0,
-                      Math.min(1, (scrollProgress * (trainersData.length + 0.5)) - index)
+                      Math.min(1, (scrollProgress * (trainersData.length + 1)) - index)
                     );
                     
                     return (
