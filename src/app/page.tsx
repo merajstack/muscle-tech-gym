@@ -1,7 +1,7 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import { Upload } from "lucide-react";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -10,16 +10,17 @@ export default function Home() {
       <main className="min-h-screen bg-black">
         {/* Hero Section */}
         <section className="relative h-screen flex items-center justify-center overflow-hidden">
-          {/* Image Upload Placeholder */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black z-10" />
-          <div className="absolute inset-0 bg-zinc-900 flex items-center justify-center group cursor-pointer">
-            <div className="text-center z-20">
-              <Upload className="w-16 h-16 text-zinc-700 mx-auto mb-4 group-hover:text-zinc-600 transition-colors" />
-              <p className="text-zinc-700 font-medium group-hover:text-zinc-600 transition-colors">
-                Upload Hero Image
-              </p>
-              <p className="text-zinc-800 text-sm mt-2">1920x1080 recommended</p>
-            </div>
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image 
+              src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/main-page-1765286459157.avif"
+              alt="Muscle Tech Hero Background"
+              fill
+              className="object-cover"
+              priority
+              quality={100}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black z-10" />
           </div>
 
           {/* Hero Content */}
