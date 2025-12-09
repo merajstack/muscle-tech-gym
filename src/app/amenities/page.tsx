@@ -1,21 +1,21 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import { Upload } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 
 const amenitiesData = [
-  { id: 1, title: "Locker Rooms", description: "Premium facilities with showers" },
-  { id: 2, title: "Sauna & Steam", description: "Relax and recover" },
-  { id: 3, title: "Juice Bar", description: "Healthy refreshments" },
-  { id: 4, title: "Parking", description: "Free member parking" },
+  { id: 1, title: "Locker Rooms", description: "Premium facilities with showers", image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" },
+  { id: 2, title: "Sauna & Steam", description: "Relax and recover", image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80" },
+  { id: 3, title: "Juice Bar", description: "Healthy refreshments", image: "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=800&q=80" },
+  { id: 4, title: "Parking", description: "Free member parking", image: "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=800&q=80" },
 ];
 
 const servicesData = [
-  { id: 5, title: "Personal Training", description: "One-on-one expert guidance" },
-  { id: 6, title: "Nutrition Plans", description: "Custom meal planning" },
-  { id: 7, title: "Group Classes", description: "Community workouts" },
-  { id: 8, title: "Recovery Therapy", description: "Massage and treatment" },
+  { id: 5, title: "Personal Training", description: "One-on-one expert guidance", image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80" },
+  { id: 6, title: "Nutrition Plans", description: "Custom meal planning", image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80" },
+  { id: 7, title: "Group Classes", description: "Community workouts", image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80" },
+  { id: 8, title: "Recovery Therapy", description: "Massage and treatment", image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80" },
 ];
 
 export default function AmenitiesPage() {
@@ -76,12 +76,15 @@ export default function AmenitiesPage() {
                       transitionDelay: `${index * 100}ms`,
                     }}
                   >
-                    <div className="relative h-48 bg-zinc-800 flex items-center justify-center cursor-pointer">
+                    <div className="relative h-48 bg-zinc-800 overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
-                      <div className="text-center z-20">
-                        <Upload className="w-10 h-10 text-zinc-600 mx-auto mb-2" />
-                        <p className="text-zinc-600 text-sm">Upload Image</p>
-                      </div>
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      />
                     </div>
                     <div className="p-6">
                       <h3 className="text-2xl font-black text-white mb-2 group-hover:text-red-600 transition-colors">
@@ -114,12 +117,15 @@ export default function AmenitiesPage() {
                       transitionDelay: `${index * 100}ms`,
                     }}
                   >
-                    <div className="relative h-48 bg-zinc-800 flex items-center justify-center cursor-pointer">
+                    <div className="relative h-48 bg-zinc-800 overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-t from-red-950/50 to-transparent z-10" />
-                      <div className="text-center z-20">
-                        <Upload className="w-10 h-10 text-red-600 mx-auto mb-2" />
-                        <p className="text-red-600 text-sm">Upload Image</p>
-                      </div>
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      />
                     </div>
                     <div className="p-6">
                       <h3 className="text-2xl font-black text-red-600 mb-2 group-hover:text-red-500 transition-colors">

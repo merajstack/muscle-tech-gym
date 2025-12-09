@@ -125,10 +125,7 @@ export default function TrainersPage() {
                             {trainer.name}
                           </h3>
                           <p className="text-red-600 font-semibold mb-1 text-sm sm:text-base">{trainer.specialty}</p>
-                          <p className="text-gray-500 text-xs sm:text-sm mb-4">{trainer.experience}</p>
-                          <button className="w-full py-2 sm:py-3 bg-transparent border border-red-600 text-red-600 font-bold text-sm sm:text-base rounded-sm hover:bg-red-600 hover:text-white transition-all duration-300">
-                            BOOK SESSION
-                          </button>
+                          <p className="text-gray-500 text-xs sm:text-sm">{trainer.experience}</p>
                         </div>
                       </div>
                     </div>
