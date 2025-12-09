@@ -35,16 +35,23 @@ const replacementCategories = [
 export default function FitnessPage() {
   const [showReplacement, setShowReplacement] = useState(false);
   const [transitionProgress, setTransitionProgress] = useState(0);
+  const [imageTransition, setImageTransition] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      
+      // Trigger image transition at 55% scroll
+      setImageTransition(scrollPercent >= 55);
+      
       if (triggerRef.current) {
         const rect = triggerRef.current.getBoundingClientRect();
         const triggerPoint = window.innerHeight * 0.4;
         const transitionRange = window.innerHeight * 0.5;
         
-        // Calculate smooth transition progress
         const distanceFromTrigger = triggerPoint - rect.top;
         const progress = Math.max(0, Math.min(1, distanceFromTrigger / transitionRange));
         
@@ -109,8 +116,20 @@ export default function FitnessPage() {
                             src={category.image}
                             alt={category.title}
                             fill
-                            className="object-cover"
+                            className={`object-cover transition-all duration-1000 ease-out ${
+                              imageTransition 
+                                ? 'scale-110 brightness-125 saturate-150' 
+                                : 'scale-100 brightness-100 saturate-100'
+                            }`}
                             sizes="(max-width: 768px) 100vw, 33vw"
+                            style={{
+                              transform: imageTransition 
+                                ? `scale(1.1) translateY(-${index * 5}px)` 
+                                : 'scale(1) translateY(0)',
+                              filter: imageTransition 
+                                ? 'brightness(1.25) saturate(1.5)' 
+                                : 'brightness(1) saturate(1)',
+                            }}
                           />
                         ) : (
                           <div className="flex items-center justify-center h-full cursor-pointer">
