@@ -15,7 +15,7 @@ const servicesData = [
   { id: 5, title: "Personal Training", description: "One-on-one expert guidance", image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80" },
   { id: 6, title: "Nutrition Plans", description: "Custom meal planning", image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80" },
   { id: 7, title: "Group Classes", description: "Community workouts", image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80" },
-  { id: 8, title: "Recovery Therapy", description: "Massage and treatment", image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80" },
+  { id: 8, title: "Recovery Therapy", description: "Massage and treatment", image: "https://images.unsplash.com/photo-1596178060671-7a80dc8059ea?w=800&q=80" },
 ];
 
 export default function AmenitiesPage() {
