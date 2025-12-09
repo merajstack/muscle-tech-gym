@@ -55,10 +55,10 @@ export default function TrainersPage() {
           const progress = Math.min(scrolled / totalScroll, 1);
           setScrollProgress(progress);
 
-          // Reveal cards based on scroll progress - smoother calculation
+          // Reveal cards based on scroll progress with extended visibility for 4th card
           const cardsToReveal = Math.min(
             trainersData.length,
-            Math.floor(progress * (trainersData.length + 1))
+            Math.floor(progress * (trainersData.length + 1.5))
           );
           setRevealedCards(cardsToReveal);
         } else if (rect.top > 0) {
@@ -84,22 +84,22 @@ export default function TrainersPage() {
       <main className="bg-black">
         {/* Hero Section */}
         <section className="min-h-screen pt-20 flex items-center bg-gradient-to-b from-black to-zinc-900">
-          <div className="container mx-auto px-6">
-            <h1 className="text-6xl md:text-7xl font-black text-white mb-4">
+          <div className="container mx-auto px-4 sm:px-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
               EXPERT <span className="text-red-600">TRAINERS</span>
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mb-8">
+            <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mb-8">
               Meet our certified professionals dedicated to your success
             </p>
-            <p className="text-gray-500">Scroll down to meet the team</p>
+            <p className="text-gray-500 text-sm sm:text-base">Scroll down to meet the team</p>
           </div>
         </section>
 
-        {/* Scroll-Jacking Pinned Trainers Section */}
+        {/* Scroll-Jacking Pinned Trainers Section - Increased height for 4th card visibility */}
         <section
           ref={sectionRef}
           className="relative"
-          style={{ height: `${350}vh` }}
+          style={{ height: `${450}vh` }}
         >
           <div
             className={`${
@@ -115,18 +115,21 @@ export default function TrainersPage() {
             />
 
             {/* Trainers Grid */}
-            <div className="container mx-auto px-6 relative z-10">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="container mx-auto px-4 sm:px-6 relative z-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {trainersData.map((trainer, index) => {
-                  // Improved card reveal calculation
-                  const revealThreshold = index / trainersData.length;
-                  const revealRange = 1 / trainersData.length;
+                  // Extended reveal calculation for smoother 4th card appearance
+                  const totalCards = trainersData.length;
+                  const revealStart = index / (totalCards + 0.5);
+                  const revealEnd = (index + 1.2) / (totalCards + 0.5);
+                  const revealRange = revealEnd - revealStart;
+                  
                   const cardProgress = Math.max(
                     0,
-                    Math.min(1, (scrollProgress - revealThreshold) / revealRange)
+                    Math.min(1, (scrollProgress - revealStart) / revealRange)
                   );
                   
-                  const isRevealed = scrollProgress > revealThreshold;
+                  const isRevealed = scrollProgress > revealStart;
 
                   return (
                     <div
@@ -140,24 +143,24 @@ export default function TrainersPage() {
                     >
                       <div className="bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-300">
                         {/* Image Upload Placeholder */}
-                        <div className="relative h-80 bg-zinc-800 flex items-center justify-center cursor-pointer">
+                        <div className="relative h-64 sm:h-72 md:h-80 bg-zinc-800 flex items-center justify-center cursor-pointer">
                           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
                           <div className="text-center z-20">
-                            <Upload className="w-12 h-12 text-zinc-600 mx-auto mb-2 group-hover:text-zinc-500 transition-colors" />
-                            <p className="text-zinc-600 text-sm group-hover:text-zinc-500 transition-colors">
+                            <Upload className="w-10 h-10 sm:w-12 sm:h-12 text-zinc-600 mx-auto mb-2 group-hover:text-zinc-500 transition-colors" />
+                            <p className="text-zinc-600 text-xs sm:text-sm group-hover:text-zinc-500 transition-colors px-2">
                               Upload Trainer Photo
                             </p>
                           </div>
                         </div>
 
                         {/* Trainer Info */}
-                        <div className="p-6">
-                          <h3 className="text-2xl font-black text-white mb-2 group-hover:text-red-600 transition-colors">
+                        <div className="p-4 sm:p-6">
+                          <h3 className="text-xl sm:text-2xl font-black text-white mb-2 group-hover:text-red-600 transition-colors">
                             {trainer.name}
                           </h3>
-                          <p className="text-red-600 font-semibold mb-1">{trainer.specialty}</p>
-                          <p className="text-gray-500 text-sm mb-4">{trainer.experience}</p>
-                          <button className="w-full py-3 bg-transparent border border-red-600 text-red-600 font-bold rounded-sm hover:bg-red-600 hover:text-white transition-all duration-300">
+                          <p className="text-red-600 font-semibold mb-1 text-sm sm:text-base">{trainer.specialty}</p>
+                          <p className="text-gray-500 text-xs sm:text-sm mb-4">{trainer.experience}</p>
+                          <button className="w-full py-2 sm:py-3 bg-transparent border border-red-600 text-red-600 font-bold text-sm sm:text-base rounded-sm hover:bg-red-600 hover:text-white transition-all duration-300">
                             BOOK SESSION
                           </button>
                         </div>
@@ -173,15 +176,15 @@ export default function TrainersPage() {
                   {trainersData.map((_, index) => {
                     const dotProgress = Math.max(
                       0,
-                      Math.min(1, (scrollProgress * trainersData.length) - index)
+                      Math.min(1, (scrollProgress * (trainersData.length + 0.5)) - index)
                     );
                     
                     return (
                       <div
                         key={index}
-                        className="h-2 rounded-full transition-all duration-500"
+                        className="h-1.5 sm:h-2 rounded-full transition-all duration-500"
                         style={{
-                          width: `${8 + dotProgress * 24}px`,
+                          width: `${6 + dotProgress * 20}px`,
                           backgroundColor: dotProgress > 0 ? '#dc2626' : '#3f3f46',
                           opacity: 0.3 + dotProgress * 0.7,
                         }}
@@ -195,15 +198,15 @@ export default function TrainersPage() {
         </section>
 
         {/* Content After Scroll Section */}
-        <section className="py-40 bg-zinc-900">
-          <div className="container mx-auto px-6 text-center">
-            <h2 className="text-4xl font-black text-white mb-4">
+        <section className="py-20 sm:py-32 md:py-40 bg-zinc-900">
+          <div className="container mx-auto px-4 sm:px-6 text-center">
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               TRAIN WITH THE <span className="text-red-600">BEST</span>
             </h2>
-            <p className="text-gray-400 mb-8">
+            <p className="text-gray-400 mb-8 text-sm sm:text-base">
               All our trainers are certified and passionate about helping you succeed
             </p>
-            <button className="px-8 py-4 bg-red-600 text-white font-bold text-lg rounded-sm hover:bg-red-700 transition-colors duration-300">
+            <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-colors duration-300">
               VIEW ALL TRAINERS
             </button>
           </div>
