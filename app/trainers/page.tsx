@@ -262,8 +262,8 @@ export default function TrainersPage() {
         {/* Content After Scroll Section */}
         <section className="py-20 sm:py-32 md:py-40 bg-zinc-900 md:bg-gradient-to-b md:from-zinc-900 md:via-cyan-950/10 md:to-black">
           <div className="container mx-auto px-4 sm:px-6 text-center">
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-cyan-200 md:to-white md:bg-clip-text md:text-transparent">
-              TRAIN WITH THE <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-cyan-500 md:bg-clip-text md:text-transparent">BEST</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              TRAIN WITH THE <span className="text-red-600">BEST</span>
             </h2>
             <p className="text-gray-400 mb-8 text-sm sm:text-base">
               All our trainers are certified and passionate about helping you succeed

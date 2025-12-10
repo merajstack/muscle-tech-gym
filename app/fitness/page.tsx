@@ -97,8 +97,8 @@ export default function FitnessPage() {
         {/* Hero Section - Desktop gradient */}
         <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-black to-zinc-900 md:bg-gradient-to-br md:from-black md:via-red-950/20 md:to-zinc-900">
           <div className="container mx-auto px-4 sm:px-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-red-200 md:to-white md:bg-clip-text md:text-transparent">
-              FITNESS <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">PROGRAMS</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
+              FITNESS <span className="text-red-600">PROGRAMS</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl">
               Discover our comprehensive range of fitness programs designed for every goal
@@ -203,8 +203,8 @@ export default function FitnessPage() {
         {/* Additional Content for Scroll */}
         <section className="py-20 sm:py-32 md:py-40 bg-zinc-900 md:bg-gradient-to-b md:from-zinc-900 md:via-red-950/10 md:to-black">
           <div className="container mx-auto px-4 sm:px-6 text-center">
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-red-200 md:to-white md:bg-clip-text md:text-transparent">
-              READY TO <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">START?</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              READY TO <span className="text-red-600">START?</span>
             </h2>
             <p className="text-gray-400 mb-8 text-sm sm:text-base">Join thousands of members achieving their goals</p>
             <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-colors duration-300 md:bg-gradient-to-r md:from-red-600 md:to-red-700 md:hover:from-red-500 md:hover:to-red-600 md:shadow-lg md:shadow-red-600/30">

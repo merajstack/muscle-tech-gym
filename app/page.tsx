@@ -135,10 +135,10 @@ export default function Home() {
           {/* Hero Content */}
           <div className="relative z-20 text-center px-4 sm:px-6 max-w-5xl">
             <h1 
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 sm:mb-6 tracking-tight md:bg-gradient-to-r md:from-white md:via-red-200 md:to-white md:bg-clip-text md:text-transparent"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 sm:mb-6 tracking-tight"
               style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
             >
-              MUSCLE <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">TECH</span>
+              MUSCLE <span className="text-red-600">TECH</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
               Transform your body and mind at the most advanced fitness facility
@@ -167,10 +167,10 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               <div>
                 <h2 
-                  className="text-4xl sm:text-5xl md:text-6xl text-white mb-6 md:bg-gradient-to-r md:from-white md:via-red-200 md:to-white md:bg-clip-text md:text-transparent"
+                  className="text-4xl sm:text-5xl md:text-6xl text-white mb-6"
                   style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
                 >
-                  BRAND <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">STORY</span>
+                  BRAND <span className="text-red-600">STORY</span>
                 </h2>
                 <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
                   At MuscleTech, we believe strength is built — not gifted.
@@ -181,7 +181,7 @@ export default function Home() {
                 <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
                   Whether you're chasing muscle growth, fat loss, endurance, or total body transformation, we deliver innovations that help you push harder, recover faster, and achieve more.
                 </p>
-                <p className="text-red-600 font-bold text-lg sm:text-xl mt-6 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">
+                <p className="text-red-600 font-bold text-lg sm:text-xl mt-6">
                   Stronger today. Unstoppable tomorrow.
                 </p>
               </div>
@@ -211,7 +211,7 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">
-                  <p className="text-red-600 font-bold text-xl sm:text-2xl mb-2 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">
+                  <p className="text-red-600 font-bold text-xl sm:text-2xl mb-2">
                     Join the Gym That Invests in You
                   </p>
                   <p className="text-gray-300 text-sm sm:text-base">
@@ -222,10 +222,10 @@ export default function Home() {
               </div>
               <div className="order-1 md:order-2">
                 <h2 
-                  className="text-4xl sm:text-5xl md:text-6xl text-white mb-8 md:bg-gradient-to-r md:from-white md:via-orange-200 md:to-white md:bg-clip-text md:text-transparent"
+                  className="text-4xl sm:text-5xl md:text-6xl text-white mb-8"
                   style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
                 >
-                  WHY <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">CHOOSE US</span>
+                  WHY <span className="text-red-600">CHOOSE US</span>
                 </h2>
                 <div className="space-y-5">
                   <div className="md:p-4 md:rounded-lg md:bg-gradient-to-r md:from-zinc-900/50 md:to-transparent md:border-l-2 md:border-red-600/50">
@@ -266,10 +266,10 @@ export default function Home() {
         <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800 overflow-hidden md:bg-gradient-to-b md:from-zinc-900 md:via-red-950/10 md:to-black">
           <div className="container mx-auto px-4 sm:px-6">
             <h2 
-              className="text-4xl sm:text-5xl md:text-6xl text-white mb-12 text-center md:bg-gradient-to-r md:from-white md:via-red-200 md:to-white md:bg-clip-text md:text-transparent"
+              className="text-4xl sm:text-5xl md:text-6xl text-white mb-12 text-center"
               style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
             >
-              SUCCESS <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">STORIES</span>
+              SUCCESS <span className="text-red-600">STORIES</span>
             </h2>
           </div>
           

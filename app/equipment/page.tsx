@@ -41,8 +41,8 @@ export default function EquipmentPage() {
         {/* Hero Section - Desktop gradient */}
         <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-black to-zinc-900 md:bg-gradient-to-br md:from-black md:via-emerald-950/20 md:to-zinc-900">
           <div className="container mx-auto px-4 sm:px-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-emerald-200 md:to-white md:bg-clip-text md:text-transparent">
-              STATE-OF-THE-ART <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-emerald-500 md:bg-clip-text md:text-transparent">EQUIPMENT</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
+              STATE-OF-THE-ART <span className="text-red-600">EQUIPMENT</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl">
               Over 100 pieces of premium equipment for every training style
