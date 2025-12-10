@@ -31,32 +31,34 @@ const allCategories = [
 
 export default function FitnessPage() {
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
-  const [animationStarted, setAnimationStarted] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !animationStarted) {
-            setAnimationStarted(true);
-            allCategories.forEach((_, index) => {
-              setTimeout(() => {
-                setVisibleCards((prev) => [...prev, index]);
-              }, index * 400);
-            });
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      
+      const rect = sectionRef.current.getBoundingClientRect();
+      const sectionTop = rect.top;
+      const sectionHeight = rect.height;
+      const windowHeight = window.innerHeight;
+      
+      const scrollProgress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / (windowHeight + sectionHeight * 0.5)));
+      
+      const cardsToShow = Math.floor(scrollProgress * (allCategories.length + 1));
+      
+      const newVisibleCards: number[] = [];
+      for (let i = 0; i < Math.min(cardsToShow, allCategories.length); i++) {
+        newVisibleCards.push(i);
+      }
+      
+      setVisibleCards(newVisibleCards);
+    };
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
 
-    return () => observer.disconnect();
-  }, [animationStarted]);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
@@ -77,10 +79,10 @@ export default function FitnessPage() {
         {/* Card Stack Animation Section */}
         <section 
           ref={sectionRef}
-          className="py-12 sm:py-16 md:py-20 min-h-screen md:bg-gradient-to-b md:from-zinc-900 md:via-black md:to-zinc-900 overflow-hidden"
+          className="py-12 sm:py-16 md:py-20 min-h-[150vh] md:bg-gradient-to-b md:from-zinc-900 md:via-black md:to-zinc-900 overflow-hidden"
         >
           <div className="container mx-auto px-4 sm:px-6">
-            <div className="flex items-center justify-center min-h-[600px] relative">
+            <div className="sticky top-24 flex items-center justify-center min-h-[600px] relative">
               <div className="relative w-full max-w-md" style={{ height: '500px' }}>
                 {allCategories.map((category, index) => {
                   const isVisible = visibleCards.includes(index);
@@ -155,7 +157,7 @@ export default function FitnessPage() {
 
             <div className="text-center mt-12 sm:mt-16">
               <p className="text-gray-500 text-xs sm:text-sm">
-                {visibleCards.length === allCategories.length ? "All programs loaded" : "Loading programs..."}
+                {visibleCards.length === allCategories.length ? "All programs loaded" : `Scroll to reveal ${allCategories.length - visibleCards.length} more`}
               </p>
             </div>
           </div>
