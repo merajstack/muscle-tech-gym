@@ -128,24 +128,26 @@ export default function Home() {
               quality={100}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black z-10" />
+            {/* Desktop gradient overlay */}
+            <div className="hidden md:block absolute inset-0 bg-gradient-to-br from-red-950/20 via-transparent to-orange-950/20 z-10" />
           </div>
 
           {/* Hero Content */}
           <div className="relative z-20 text-center px-4 sm:px-6 max-w-5xl">
             <h1 
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 sm:mb-6 tracking-tight"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 sm:mb-6 tracking-tight md:bg-gradient-to-r md:from-white md:via-red-200 md:to-white md:bg-clip-text md:text-transparent"
               style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
             >
-              MUSCLE <span className="text-red-600">TECH</span>
+              MUSCLE <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">TECH</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
               Transform your body and mind at the most advanced fitness facility
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
-              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-all duration-300 hover:scale-105">
+              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-all duration-300 hover:scale-105 md:bg-gradient-to-r md:from-red-600 md:to-red-700 md:hover:from-red-500 md:hover:to-red-600 md:shadow-lg md:shadow-red-600/30">
                 START YOUR JOURNEY
               </button>
-              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-transparent border-2 border-white text-white font-bold text-base sm:text-lg rounded-sm hover:bg-white hover:text-black transition-all duration-300">
+              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-transparent border-2 border-white text-white font-bold text-base sm:text-lg rounded-sm hover:bg-white hover:text-black transition-all duration-300 md:border-gradient-to-r md:hover:shadow-lg md:hover:shadow-white/20">
                 LEARN MORE
               </button>
             </div>
@@ -160,15 +162,15 @@ export default function Home() {
         </section>
 
         {/* Brand Story Section */}
-        <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800">
+        <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800 md:bg-gradient-to-br md:from-black md:via-red-950/10 md:to-black">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               <div>
                 <h2 
-                  className="text-4xl sm:text-5xl md:text-6xl text-white mb-6"
+                  className="text-4xl sm:text-5xl md:text-6xl text-white mb-6 md:bg-gradient-to-r md:from-white md:via-red-200 md:to-white md:bg-clip-text md:text-transparent"
                   style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
                 >
-                  BRAND <span className="text-red-600">STORY</span>
+                  BRAND <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">STORY</span>
                 </h2>
                 <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
                   At MuscleTech, we believe strength is built — not gifted.
@@ -179,11 +181,11 @@ export default function Home() {
                 <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
                   Whether you're chasing muscle growth, fat loss, endurance, or total body transformation, we deliver innovations that help you push harder, recover faster, and achieve more.
                 </p>
-                <p className="text-red-600 font-bold text-lg sm:text-xl mt-6">
+                <p className="text-red-600 font-bold text-lg sm:text-xl mt-6 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">
                   Stronger today. Unstoppable tomorrow.
                 </p>
               </div>
-              <div className="relative h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden">
+              <div className="relative h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden md:shadow-2xl md:shadow-red-600/20">
                 <Image 
                   src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/friends-1765303075554.webp"
                   alt="MuscleTech Team"
@@ -196,10 +198,10 @@ export default function Home() {
         </section>
 
         {/* Why Choose Us Section */}
-        <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800">
+        <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800 md:bg-gradient-to-b md:from-black md:via-orange-950/10 md:to-zinc-900">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-              <div className="relative h-[400px] sm:h-[500px] md:h-[600px] rounded-lg overflow-hidden order-2 md:order-1">
+              <div className="relative h-[400px] sm:h-[500px] md:h-[600px] rounded-lg overflow-hidden order-2 md:order-1 md:shadow-2xl md:shadow-orange-600/20">
                 <Image 
                   src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/reciption-1765303353505.webp"
                   alt="Muscle Tech Gym Interior"
@@ -208,7 +210,7 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">
-                  <p className="text-red-600 font-bold text-xl sm:text-2xl mb-2">
+                  <p className="text-red-600 font-bold text-xl sm:text-2xl mb-2 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">
                     Join the Gym That Invests in You
                   </p>
                   <p className="text-gray-300 text-sm sm:text-base">
@@ -219,37 +221,37 @@ export default function Home() {
               </div>
               <div className="order-1 md:order-2">
                 <h2 
-                  className="text-4xl sm:text-5xl md:text-6xl text-white mb-8"
+                  className="text-4xl sm:text-5xl md:text-6xl text-white mb-8 md:bg-gradient-to-r md:from-white md:via-orange-200 md:to-white md:bg-clip-text md:text-transparent"
                   style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
                 >
-                  WHY <span className="text-red-600">CHOOSE US</span>
+                  WHY <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">CHOOSE US</span>
                 </h2>
                 <div className="space-y-5">
-                  <div>
+                  <div className="md:p-4 md:rounded-lg md:bg-gradient-to-r md:from-zinc-900/50 md:to-transparent md:border-l-2 md:border-red-600/50">
                     <h3 className="text-white font-bold text-lg mb-1">Elite Equipment, Built for Performance</h3>
                     <p className="text-gray-400 text-sm leading-relaxed">Train with commercial-grade machines, power racks, free weights, and functional tools designed for serious results. Every zone is optimized for strength, endurance, and mobility.</p>
                   </div>
-                  <div>
+                  <div className="md:p-4 md:rounded-lg md:bg-gradient-to-r md:from-zinc-900/50 md:to-transparent md:border-l-2 md:border-orange-600/50">
                     <h3 className="text-white font-bold text-lg mb-1">Personalized Coaching That Delivers</h3>
                     <p className="text-gray-400 text-sm leading-relaxed">Our certified trainers craft workout plans tailored to your goals — whether you want to lose fat, build muscle, improve stamina, or simply get healthier.</p>
                   </div>
-                  <div>
+                  <div className="md:p-4 md:rounded-lg md:bg-gradient-to-r md:from-zinc-900/50 md:to-transparent md:border-l-2 md:border-red-600/50">
                     <h3 className="text-white font-bold text-lg mb-1">A Motivating Environment That Pushes You Forward</h3>
                     <p className="text-gray-400 text-sm leading-relaxed">Step into a space where energy stays high, discipline is respected, and progress is celebrated. We've built a community where everyone works hard and grows together.</p>
                   </div>
-                  <div>
+                  <div className="md:p-4 md:rounded-lg md:bg-gradient-to-r md:from-zinc-900/50 md:to-transparent md:border-l-2 md:border-orange-600/50">
                     <h3 className="text-white font-bold text-lg mb-1">Results-Focused Training Programs</h3>
                     <p className="text-gray-400 text-sm leading-relaxed">Every training style — strength, cardio, HIIT, or functional — is backed by proven methods to help you see and feel real changes faster.</p>
                   </div>
-                  <div>
+                  <div className="md:p-4 md:rounded-lg md:bg-gradient-to-r md:from-zinc-900/50 md:to-transparent md:border-l-2 md:border-red-600/50">
                     <h3 className="text-white font-bold text-lg mb-1">Clean, Safe & Comfortable Space</h3>
                     <p className="text-gray-400 text-sm leading-relaxed">Our gym is maintained daily, sanitized regularly, and equipped with proper ventilation to ensure a safe and comfortable workout experience.</p>
                   </div>
-                  <div>
+                  <div className="md:p-4 md:rounded-lg md:bg-gradient-to-r md:from-zinc-900/50 md:to-transparent md:border-l-2 md:border-orange-600/50">
                     <h3 className="text-white font-bold text-lg mb-1">Flexible Membership Plans</h3>
                     <p className="text-gray-400 text-sm leading-relaxed">Choose from a range of membership plans designed to fit your lifestyle, not the other way around.</p>
                   </div>
-                  <div>
+                  <div className="md:p-4 md:rounded-lg md:bg-gradient-to-r md:from-zinc-900/50 md:to-transparent md:border-l-2 md:border-red-600/50">
                     <h3 className="text-white font-bold text-lg mb-1">Trackable Progress</h3>
                     <p className="text-gray-400 text-sm leading-relaxed">Monitor your improvements with trainer check-ins, body assessments, and progress-based adjustments. We help you stay accountable and motivated.</p>
                   </div>
@@ -260,13 +262,13 @@ export default function Home() {
         </section>
 
         {/* Success Stories Section */}
-        <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800 overflow-hidden">
+        <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800 overflow-hidden md:bg-gradient-to-b md:from-zinc-900 md:via-red-950/10 md:to-black">
           <div className="container mx-auto px-4 sm:px-6">
             <h2 
-              className="text-4xl sm:text-5xl md:text-6xl text-white mb-12 text-center"
+              className="text-4xl sm:text-5xl md:text-6xl text-white mb-12 text-center md:bg-gradient-to-r md:from-white md:via-red-200 md:to-white md:bg-clip-text md:text-transparent"
               style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
             >
-              SUCCESS <span className="text-red-600">STORIES</span>
+              SUCCESS <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">STORIES</span>
             </h2>
           </div>
           
@@ -332,7 +334,7 @@ export default function Home() {
             {/* Navigation Arrows */}
             <button 
               onClick={handlePrev}
-              className="absolute left-4 sm:left-8 md:left-16 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-600/90 hover:bg-red-600 text-white flex items-center justify-center transition-all duration-200 hover:scale-110"
+              className="absolute left-4 sm:left-8 md:left-16 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-600/90 hover:bg-red-600 text-white flex items-center justify-center transition-all duration-200 hover:scale-110 md:bg-gradient-to-r md:from-red-600 md:to-red-700 md:hover:from-red-500 md:hover:to-red-600 md:shadow-lg md:shadow-red-600/30"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -340,7 +342,7 @@ export default function Home() {
             </button>
             <button 
               onClick={handleNext}
-              className="absolute right-4 sm:right-8 md:right-16 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-600/90 hover:bg-red-600 text-white flex items-center justify-center transition-all duration-200 hover:scale-110"
+              className="absolute right-4 sm:right-8 md:right-16 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-600/90 hover:bg-red-600 text-white flex items-center justify-center transition-all duration-200 hover:scale-110 md:bg-gradient-to-r md:from-red-600 md:to-red-700 md:hover:from-red-500 md:hover:to-red-600 md:shadow-lg md:shadow-red-600/30"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

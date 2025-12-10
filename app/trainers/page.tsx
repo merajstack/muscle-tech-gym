@@ -21,8 +21,19 @@ const trainersData = [
 
 export default function TrainersPage() {
   const [isPinned, setIsPinned] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+  const [mobileAnimationPhase, setMobileAnimationPhase] = useState<'idle' | 'entering' | 'exiting'>('idle');
   const sectionRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,22 +55,40 @@ export default function TrainersPage() {
         } else {
           setScrollProgress(1);
         }
+
+        if (isMobile && sectionRef.current) {
+          const currentScrollY = window.scrollY;
+          const scrollDirection = currentScrollY > lastScrollY.current ? 'down' : 'up';
+          lastScrollY.current = currentScrollY;
+
+          const sectionTop = rect.top;
+          const scrollInSection = Math.max(0, windowHeight * 0.5 - sectionTop);
+          const cardHeight = windowHeight * 0.6;
+          const newIndex = Math.floor(scrollInSection / cardHeight);
+          const clampedIndex = Math.max(0, Math.min(newIndex, trainersData.length - 1));
+
+          if (clampedIndex !== mobileActiveIndex) {
+            setMobileAnimationPhase(scrollDirection === 'down' ? 'entering' : 'exiting');
+            setMobileActiveIndex(clampedIndex);
+            setTimeout(() => setMobileAnimationPhase('idle'), 800);
+          }
+        }
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isMobile, mobileActiveIndex]);
 
   return (
     <>
       <Navbar />
       <main className="bg-black">
-        {/* Hero Section - Minimal centered design matching reference */}
-        <section className="h-screen flex items-center justify-center bg-black">
+        {/* Hero Section - Desktop gradient */}
+        <section className="h-screen flex items-center justify-center bg-black md:bg-gradient-to-br md:from-black md:via-cyan-950/20 md:to-black">
           <div className="text-center">
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter">
+            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter md:bg-gradient-to-r md:from-white md:via-cyan-200 md:to-white md:bg-clip-text md:text-transparent">
               TRAINERS
             </h1>
             <p className="text-gray-500 text-base sm:text-lg mt-6 tracking-wide">
@@ -71,7 +100,7 @@ export default function TrainersPage() {
         {/* Scroll-Jacking Pinned Trainers Section */}
         <section
           ref={sectionRef}
-          className="relative"
+          className="relative md:bg-gradient-to-b md:from-black md:via-cyan-950/10 md:to-zinc-900"
           style={{ height: `${300}vh` }}
         >
           <div
@@ -87,59 +116,130 @@ export default function TrainersPage() {
             />
 
             <div className="container mx-auto px-4 sm:px-6 relative z-10">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
-                {trainersData.map((trainer, index) => {
-                  const totalCards = trainersData.length;
-                  const revealStart = index / (totalCards + 1);
-                  const revealEnd = (index + 1.5) / (totalCards + 1);
-                  const revealRange = revealEnd - revealStart;
-                  
-                  const cardProgress = Math.max(
-                    0,
-                    Math.min(1, (scrollProgress - revealStart) / revealRange)
-                  );
+              {/* Mobile: Semi-circular path animation */}
+              {isMobile ? (
+                <div className="relative h-[60vh] overflow-hidden">
+                  {trainersData.map((trainer, index) => {
+                    const isActive = index === mobileActiveIndex;
+                    const isNext = index === mobileActiveIndex + 1;
+                    const isPrev = index === mobileActiveIndex - 1;
 
-                  return (
-                    <div
-                      key={trainer.id}
-                      className="transition-all duration-[1200ms] ease-out"
-                      style={{
-                        opacity: cardProgress,
-                        transform: `translateY(${(1 - cardProgress) * 80}px) scale(${0.85 + cardProgress * 0.15})`,
-                        transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
-                      }}
-                    >
-                      <div className="bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-300">
-                        <div className="relative h-64 sm:h-72 md:h-80 bg-zinc-800 flex items-center justify-center cursor-pointer">
-                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
-                          <div className="text-center z-20">
-                            <Upload className="w-10 h-10 sm:w-12 sm:h-12 text-zinc-600 mx-auto mb-2 group-hover:text-zinc-500 transition-colors" />
-                            <p className="text-zinc-600 text-xs sm:text-sm group-hover:text-zinc-500 transition-colors px-2">
-                              Upload Trainer Photo
-                            </p>
+                    let animationClass = '';
+                    let transformStyle = {};
+
+                    if (isActive) {
+                      animationClass = mobileAnimationPhase === 'entering' 
+                        ? 'mobile-card-enter-from-left' 
+                        : mobileAnimationPhase === 'exiting' 
+                          ? 'mobile-card-exit-to-right' 
+                          : 'mobile-card-center';
+                      transformStyle = {
+                        opacity: 1,
+                        transform: 'translateX(0) translateY(0) rotate(0deg)',
+                      };
+                    } else if (isNext) {
+                      animationClass = 'mobile-card-waiting-right';
+                      transformStyle = {
+                        opacity: 0,
+                        transform: 'translateX(150%) translateY(100px) rotate(15deg)',
+                      };
+                    } else if (isPrev) {
+                      animationClass = 'mobile-card-exited-right';
+                      transformStyle = {
+                        opacity: 0,
+                        transform: 'translateX(150%) translateY(-100px) rotate(-15deg)',
+                      };
+                    } else {
+                      transformStyle = {
+                        opacity: 0,
+                        transform: 'translateX(-150%) translateY(0) rotate(0deg)',
+                      };
+                    }
+
+                    return (
+                      <div
+                        key={trainer.id}
+                        className={`absolute inset-0 flex items-center justify-center transition-all duration-800 ${animationClass}`}
+                        style={{
+                          ...transformStyle,
+                          transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+                          transitionDuration: '800ms',
+                        }}
+                      >
+                        <div className="w-[85%] max-w-sm bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group">
+                          <div className="relative h-64 bg-zinc-800 flex items-center justify-center cursor-pointer">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
+                            <div className="text-center z-20">
+                              <Upload className="w-10 h-10 text-zinc-600 mx-auto mb-2" />
+                              <p className="text-zinc-600 text-xs">Upload Trainer Photo</p>
+                            </div>
+                          </div>
+                          <div className="p-4">
+                            <h3 className="text-xl font-black text-white mb-2">{trainer.name}</h3>
+                            <p className="text-red-600 font-semibold mb-1 text-sm">{trainer.specialty}</p>
+                            <p className="text-gray-500 text-xs">{trainer.experience}</p>
                           </div>
                         </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                /* Desktop: Original grid layout */
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
+                  {trainersData.map((trainer, index) => {
+                    const totalCards = trainersData.length;
+                    const revealStart = index / (totalCards + 1);
+                    const revealEnd = (index + 1.5) / (totalCards + 1);
+                    const revealRange = revealEnd - revealStart;
+                    
+                    const cardProgress = Math.max(
+                      0,
+                      Math.min(1, (scrollProgress - revealStart) / revealRange)
+                    );
 
-                        <div className="p-4 sm:p-6">
-                          <h3 className="text-xl sm:text-2xl font-black text-white mb-2 group-hover:text-red-600 transition-colors">
-                            {trainer.name}
-                          </h3>
-                          <p className="text-red-600 font-semibold mb-1 text-sm sm:text-base">{trainer.specialty}</p>
-                          <p className="text-gray-500 text-xs sm:text-sm">{trainer.experience}</p>
+                    return (
+                      <div
+                        key={trainer.id}
+                        className="transition-all duration-[1200ms] ease-out"
+                        style={{
+                          opacity: cardProgress,
+                          transform: `translateY(${(1 - cardProgress) * 80}px) scale(${0.85 + cardProgress * 0.15})`,
+                          transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                        }}
+                      >
+                        <div className="bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-300 md:bg-gradient-to-br md:from-zinc-900 md:via-zinc-800/50 md:to-zinc-900 md:border-zinc-700/50 md:hover:shadow-lg md:hover:shadow-cyan-600/20">
+                          <div className="relative h-64 sm:h-72 md:h-80 bg-zinc-800 flex items-center justify-center cursor-pointer">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
+                            <div className="text-center z-20">
+                              <Upload className="w-10 h-10 sm:w-12 sm:h-12 text-zinc-600 mx-auto mb-2 group-hover:text-zinc-500 transition-colors" />
+                              <p className="text-zinc-600 text-xs sm:text-sm group-hover:text-zinc-500 transition-colors px-2">
+                                Upload Trainer Photo
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="p-4 sm:p-6">
+                            <h3 className="text-xl sm:text-2xl font-black text-white mb-2 group-hover:text-red-600 transition-colors md:bg-gradient-to-r md:from-white md:to-gray-300 md:bg-clip-text md:text-transparent">
+                              {trainer.name}
+                            </h3>
+                            <p className="text-red-600 font-semibold mb-1 text-sm sm:text-base md:bg-gradient-to-r md:from-red-500 md:to-cyan-500 md:bg-clip-text md:text-transparent">{trainer.specialty}</p>
+                            <p className="text-gray-500 text-xs sm:text-sm">{trainer.experience}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
 
+              {/* Progress dots */}
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
                 <div className="flex items-center gap-2">
                   {trainersData.map((_, index) => {
-                    const dotProgress = Math.max(
-                      0,
-                      Math.min(1, (scrollProgress * (trainersData.length + 1)) - index)
-                    );
+                    const dotProgress = isMobile 
+                      ? (index <= mobileActiveIndex ? 1 : 0)
+                      : Math.max(0, Math.min(1, (scrollProgress * (trainersData.length + 1)) - index));
                     
                     return (
                       <div
@@ -160,20 +260,75 @@ export default function TrainersPage() {
         </section>
 
         {/* Content After Scroll Section */}
-        <section className="py-20 sm:py-32 md:py-40 bg-zinc-900">
+        <section className="py-20 sm:py-32 md:py-40 bg-zinc-900 md:bg-gradient-to-b md:from-zinc-900 md:via-cyan-950/10 md:to-black">
           <div className="container mx-auto px-4 sm:px-6 text-center">
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              TRAIN WITH THE <span className="text-red-600">BEST</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-cyan-200 md:to-white md:bg-clip-text md:text-transparent">
+              TRAIN WITH THE <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-cyan-500 md:bg-clip-text md:text-transparent">BEST</span>
             </h2>
             <p className="text-gray-400 mb-8 text-sm sm:text-base">
               All our trainers are certified and passionate about helping you succeed
             </p>
-            <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-colors duration-300">
+            <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-colors duration-300 md:bg-gradient-to-r md:from-red-600 md:to-cyan-600 md:hover:from-red-500 md:hover:to-cyan-500 md:shadow-lg md:shadow-red-600/30">
               VIEW ALL TRAINERS
             </button>
           </div>
         </section>
       </main>
+
+      <style jsx>{`
+        @media (max-width: 767px) {
+          .mobile-card-enter-from-left {
+            animation: enterFromLeft 800ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          }
+          
+          .mobile-card-exit-to-right {
+            animation: exitToRight 800ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          }
+          
+          .mobile-card-center {
+            transform: translateX(0) translateY(0) rotate(0deg);
+            opacity: 1;
+          }
+          
+          @keyframes enterFromLeft {
+            0% {
+              transform: translateX(-150%) translateY(80px) rotate(-20deg);
+              opacity: 0;
+            }
+            40% {
+              transform: translateX(-50%) translateY(-40px) rotate(-10deg);
+              opacity: 0.7;
+            }
+            70% {
+              transform: translateX(10%) translateY(-20px) rotate(5deg);
+              opacity: 0.9;
+            }
+            100% {
+              transform: translateX(0) translateY(0) rotate(0deg);
+              opacity: 1;
+            }
+          }
+          
+          @keyframes exitToRight {
+            0% {
+              transform: translateX(0) translateY(0) rotate(0deg);
+              opacity: 1;
+            }
+            30% {
+              transform: translateX(30%) translateY(-40px) rotate(10deg);
+              opacity: 0.8;
+            }
+            60% {
+              transform: translateX(80%) translateY(-60px) rotate(15deg);
+              opacity: 0.5;
+            }
+            100% {
+              transform: translateX(150%) translateY(-80px) rotate(20deg);
+              opacity: 0;
+            }
+          }
+        }
+      `}</style>
     </>
   );
 }

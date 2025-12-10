@@ -20,7 +20,16 @@ const servicesData = [
 
 export default function AmenitiesPage() {
   const [showServices, setShowServices] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileScrollIndex, setMobileScrollIndex] = useState(0);
   const triggerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,23 +37,35 @@ export default function AmenitiesPage() {
         const rect = triggerRef.current.getBoundingClientRect();
         const triggerPoint = window.innerHeight * 0.4;
         setShowServices(rect.top < triggerPoint);
+
+        if (isMobile) {
+          const sectionTop = rect.top;
+          const windowHeight = window.innerHeight;
+          const scrollInSection = Math.max(0, windowHeight * 0.3 - sectionTop);
+          const cardHeight = 300;
+          const currentData = showServices ? servicesData : amenitiesData;
+          const newIndex = Math.floor(scrollInSection / cardHeight);
+          setMobileScrollIndex(Math.max(0, Math.min(newIndex, currentData.length - 1)));
+        }
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isMobile, showServices]);
+
+  const currentData = showServices ? servicesData : amenitiesData;
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen bg-black pt-20">
-        {/* Hero Section */}
-        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-black to-zinc-900">
+        {/* Hero Section - Desktop gradient */}
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-black to-zinc-900 md:bg-gradient-to-br md:from-black md:via-purple-950/20 md:to-zinc-900">
           <div className="container mx-auto px-4 sm:px-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
-              AMENITIES & <span className="text-red-600">SERVICES</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-purple-200 md:to-white md:bg-clip-text md:text-transparent">
+              AMENITIES & <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-pink-500 md:bg-clip-text md:text-transparent">SERVICES</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl">
               Everything you need for the ultimate fitness experience
@@ -53,12 +74,12 @@ export default function AmenitiesPage() {
         </section>
 
         {/* Z-Axis Replacement Animation Section */}
-        <section className="py-12 sm:py-16 md:py-20 min-h-screen relative" ref={triggerRef}>
+        <section className="py-12 sm:py-16 md:py-20 min-h-screen relative md:bg-gradient-to-b md:from-zinc-900 md:via-black md:to-zinc-900" ref={triggerRef}>
           <div className="container mx-auto px-4 sm:px-6">
             <div className="relative" style={{ perspective: "2000px" }}>
               {/* Amenities Cards - Slide Back */}
               <div
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-1000 ease-out"
+                className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-1000 ease-out ${isMobile ? 'mobile-cards-container' : ''}`}
                 style={{
                   transform: showServices
                     ? "translateZ(-400px) scale(0.8)"
@@ -68,37 +89,48 @@ export default function AmenitiesPage() {
                   width: "100%",
                 }}
               >
-                {amenitiesData.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className="bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-300"
-                    style={{
-                      transitionDelay: `${index * 100}ms`,
-                    }}
-                  >
-                    <div className="relative h-40 sm:h-48 bg-zinc-800 overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      />
+                {amenitiesData.map((item, index) => {
+                  const mobileSlideOffset = isMobile ? (index - mobileScrollIndex) * 100 : 0;
+                  const mobileZIndex = isMobile ? amenitiesData.length - index : 1;
+                  const mobileOpacity = isMobile ? (index <= mobileScrollIndex ? 1 : 0.3) : 1;
+
+                  return (
+                    <div
+                      key={item.id}
+                      className={`bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-300 md:bg-gradient-to-br md:from-zinc-900 md:via-zinc-800/50 md:to-zinc-900 md:border-zinc-700/50 md:hover:shadow-lg md:hover:shadow-purple-600/20 ${isMobile ? 'mobile-slide-card' : ''}`}
+                      style={{
+                        transitionDelay: `${index * 100}ms`,
+                        ...(isMobile && {
+                          transform: `translateY(${mobileSlideOffset}%) translateZ(${-index * 20}px)`,
+                          zIndex: mobileZIndex,
+                          opacity: mobileOpacity,
+                        }),
+                      }}
+                    >
+                      <div className="relative h-40 sm:h-48 bg-zinc-800 overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        />
+                      </div>
+                      <div className="p-4 sm:p-6">
+                        <h3 className="text-xl sm:text-2xl font-black text-white mb-2 group-hover:text-red-600 transition-colors md:bg-gradient-to-r md:from-white md:to-gray-300 md:bg-clip-text md:text-transparent">
+                          {item.title}
+                        </h3>
+                        <p className="text-gray-400 text-xs sm:text-sm">{item.description}</p>
+                      </div>
                     </div>
-                    <div className="p-4 sm:p-6">
-                      <h3 className="text-xl sm:text-2xl font-black text-white mb-2 group-hover:text-red-600 transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-400 text-xs sm:text-sm">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Services Cards - Slide Forward */}
               <div
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-1000 ease-out"
+                className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-1000 ease-out ${isMobile ? 'mobile-cards-container' : ''}`}
                 style={{
                   transform: showServices
                     ? "translateZ(0) scale(1)"
@@ -109,32 +141,43 @@ export default function AmenitiesPage() {
                   width: "100%",
                 }}
               >
-                {servicesData.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className="bg-zinc-900 border border-red-900 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-300"
-                    style={{
-                      transitionDelay: `${index * 100}ms`,
-                    }}
-                  >
-                    <div className="relative h-40 sm:h-48 bg-zinc-800 overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-t from-red-950/50 to-transparent z-10" />
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      />
+                {servicesData.map((item, index) => {
+                  const mobileSlideOffset = isMobile ? (index - mobileScrollIndex) * 100 : 0;
+                  const mobileZIndex = isMobile ? servicesData.length - index : 1;
+                  const mobileOpacity = isMobile ? (index <= mobileScrollIndex ? 1 : 0.3) : 1;
+
+                  return (
+                    <div
+                      key={item.id}
+                      className={`bg-zinc-900 border border-red-900 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-300 md:bg-gradient-to-br md:from-zinc-900 md:via-red-950/30 md:to-zinc-900 md:border-red-800/50 md:hover:shadow-lg md:hover:shadow-red-600/30 ${isMobile ? 'mobile-slide-card' : ''}`}
+                      style={{
+                        transitionDelay: `${index * 100}ms`,
+                        ...(isMobile && {
+                          transform: `translateY(${mobileSlideOffset}%) translateZ(${-index * 20}px)`,
+                          zIndex: mobileZIndex,
+                          opacity: mobileOpacity,
+                        }),
+                      }}
+                    >
+                      <div className="relative h-40 sm:h-48 bg-zinc-800 overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-t from-red-950/50 to-transparent z-10" />
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        />
+                      </div>
+                      <div className="p-4 sm:p-6">
+                        <h3 className="text-xl sm:text-2xl font-black text-red-600 mb-2 group-hover:text-red-500 transition-colors md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">
+                          {item.title}
+                        </h3>
+                        <p className="text-gray-400 text-xs sm:text-sm">{item.description}</p>
+                      </div>
                     </div>
-                    <div className="p-4 sm:p-6">
-                      <h3 className="text-xl sm:text-2xl font-black text-red-600 mb-2 group-hover:text-red-500 transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-400 text-xs sm:text-sm">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -147,18 +190,42 @@ export default function AmenitiesPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 sm:py-32 md:py-40 bg-zinc-900">
+        <section className="py-20 sm:py-32 md:py-40 bg-zinc-900 md:bg-gradient-to-b md:from-zinc-900 md:via-purple-950/10 md:to-black">
           <div className="container mx-auto px-4 sm:px-6 text-center">
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              EXPERIENCE THE <span className="text-red-600">DIFFERENCE</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-purple-200 md:to-white md:bg-clip-text md:text-transparent">
+              EXPERIENCE THE <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-pink-500 md:bg-clip-text md:text-transparent">DIFFERENCE</span>
             </h2>
             <p className="text-gray-400 mb-8 text-sm sm:text-base">Book a free tour of our facilities</p>
-            <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-colors duration-300">
+            <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-colors duration-300 md:bg-gradient-to-r md:from-red-600 md:to-pink-600 md:hover:from-red-500 md:hover:to-pink-500 md:shadow-lg md:shadow-red-600/30">
               SCHEDULE TOUR
             </button>
           </div>
         </section>
       </main>
+
+      <style jsx>{`
+        @media (max-width: 767px) {
+          .mobile-slide-card {
+            animation: mobileSlideUnder 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          }
+          
+          @keyframes mobileSlideUnder {
+            0% {
+              transform: translateY(100%) translateZ(0);
+              opacity: 0;
+            }
+            100% {
+              transform: translateY(0) translateZ(0);
+              opacity: 1;
+            }
+          }
+          
+          .mobile-cards-container {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+          }
+        }
+      `}</style>
     </>
   );
 }

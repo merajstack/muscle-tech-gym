@@ -36,7 +36,16 @@ export default function FitnessPage() {
   const [showReplacement, setShowReplacement] = useState(false);
   const [transitionProgress, setTransitionProgress] = useState(0);
   const [imageTransition, setImageTransition] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileScrollIndex, setMobileScrollIndex] = useState(0);
   const triggerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,8 +53,17 @@ export default function FitnessPage() {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = (scrollTop / docHeight) * 100;
       
-      // Trigger image transition at 55% scroll
       setImageTransition(scrollPercent >= 55);
+      
+      if (isMobile && triggerRef.current) {
+        const rect = triggerRef.current.getBoundingClientRect();
+        const sectionTop = rect.top;
+        const windowHeight = window.innerHeight;
+        const scrollInSection = Math.max(0, windowHeight * 0.3 - sectionTop);
+        const cardHeight = 400;
+        const newIndex = Math.floor(scrollInSection / cardHeight);
+        setMobileScrollIndex(Math.max(0, Math.min(newIndex, displayCategories.length - 1)));
+      }
       
       if (triggerRef.current) {
         const rect = triggerRef.current.getBoundingClientRect();
@@ -63,7 +81,7 @@ export default function FitnessPage() {
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isMobile]);
 
   const displayCategories = showReplacement ? replacementCategories : initialCategories;
 
@@ -71,11 +89,11 @@ export default function FitnessPage() {
     <>
       <Navbar />
       <main className="min-h-screen bg-black pt-20">
-        {/* Hero Section */}
-        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-black to-zinc-900">
+        {/* Hero Section - Desktop gradient */}
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-black to-zinc-900 md:bg-gradient-to-br md:from-black md:via-red-950/20 md:to-zinc-900">
           <div className="container mx-auto px-4 sm:px-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
-              FITNESS <span className="text-red-600">PROGRAMS</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-red-200 md:to-white md:bg-clip-text md:text-transparent">
+              FITNESS <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">PROGRAMS</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl">
               Discover our comprehensive range of fitness programs designed for every goal
@@ -84,9 +102,9 @@ export default function FitnessPage() {
         </section>
 
         {/* Staggered Triangle Layout with Card Replacement */}
-        <section className="py-12 sm:py-16 md:py-20 min-h-screen" ref={triggerRef}>
+        <section className="py-12 sm:py-16 md:py-20 min-h-screen md:bg-gradient-to-b md:from-zinc-900 md:via-black md:to-zinc-900" ref={triggerRef}>
           <div className="container mx-auto px-4 sm:px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 relative">
               {displayCategories.map((category, index) => {
                 const exitOpacity = showReplacement ? 0 : 1 - transitionProgress;
                 const enterOpacity = showReplacement ? transitionProgress * 2 - 1 : 0;
@@ -96,18 +114,26 @@ export default function FitnessPage() {
                 const enterTransform = showReplacement ? (1 - transitionProgress) * 50 : 50;
                 const currentTransform = showReplacement ? enterTransform : exitTransform;
 
+                const mobileSlideOffset = isMobile ? (index - mobileScrollIndex) * 100 : 0;
+                const mobileZIndex = isMobile ? displayCategories.length - index : 1;
+                const mobileOpacity = isMobile ? (index <= mobileScrollIndex ? 1 : 0.3) : currentOpacity;
+
                 return (
                   <div
                     key={category.id}
-                    className="transition-all duration-700 ease-out"
+                    className={`transition-all duration-700 ease-out ${isMobile ? 'mobile-slide-card' : ''}`}
                     style={{
-                      marginTop: `${index * 60}px`,
-                      opacity: currentOpacity,
-                      transform: `translateY(${currentTransform}px) scale(${0.95 + currentOpacity * 0.05})`,
+                      marginTop: isMobile ? 0 : `${index * 60}px`,
+                      opacity: isMobile ? mobileOpacity : currentOpacity,
+                      transform: isMobile 
+                        ? `translateY(${mobileSlideOffset}%) translateZ(${-index * 20}px)` 
+                        : `translateY(${currentTransform}px) scale(${0.95 + currentOpacity * 0.05})`,
                       transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                      zIndex: mobileZIndex,
+                      position: isMobile ? 'relative' : 'relative',
                     }}
                   >
-                    <div className="bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-500">
+                    <div className="bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-500 md:bg-gradient-to-br md:from-zinc-900 md:via-zinc-800/50 md:to-zinc-900 md:border-zinc-700/50 md:hover:shadow-lg md:hover:shadow-red-600/20">
                       {/* Image */}
                       <div className="relative h-48 sm:h-56 md:h-64 bg-zinc-800 overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
@@ -145,11 +171,11 @@ export default function FitnessPage() {
 
                       {/* Card Content */}
                       <div className="p-4 sm:p-6">
-                        <h3 className="text-2xl sm:text-3xl font-black text-white mb-2 group-hover:text-red-600 transition-colors duration-300">
+                        <h3 className="text-2xl sm:text-3xl font-black text-white mb-2 group-hover:text-red-600 transition-colors duration-300 md:bg-gradient-to-r md:from-white md:to-gray-300 md:bg-clip-text md:text-transparent md:group-hover:from-red-500 md:group-hover:to-orange-500">
                           {category.title}
                         </h3>
                         <p className="text-gray-400 mb-4 text-sm sm:text-base">{category.description}</p>
-                        <button className="w-full py-2 sm:py-3 bg-red-600 text-white font-bold text-sm sm:text-base rounded-sm hover:bg-red-700 transition-colors duration-300">
+                        <button className="w-full py-2 sm:py-3 bg-red-600 text-white font-bold text-sm sm:text-base rounded-sm hover:bg-red-700 transition-colors duration-300 md:bg-gradient-to-r md:from-red-600 md:to-red-700 md:hover:from-red-500 md:hover:to-red-600">
                           LEARN MORE
                         </button>
                       </div>
@@ -168,18 +194,37 @@ export default function FitnessPage() {
         </section>
 
         {/* Additional Content for Scroll */}
-        <section className="py-20 sm:py-32 md:py-40 bg-zinc-900">
+        <section className="py-20 sm:py-32 md:py-40 bg-zinc-900 md:bg-gradient-to-b md:from-zinc-900 md:via-red-950/10 md:to-black">
           <div className="container mx-auto px-4 sm:px-6 text-center">
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              READY TO <span className="text-red-600">START?</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-red-200 md:to-white md:bg-clip-text md:text-transparent">
+              READY TO <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-orange-500 md:bg-clip-text md:text-transparent">START?</span>
             </h2>
             <p className="text-gray-400 mb-8 text-sm sm:text-base">Join thousands of members achieving their goals</p>
-            <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-colors duration-300">
+            <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-colors duration-300 md:bg-gradient-to-r md:from-red-600 md:to-red-700 md:hover:from-red-500 md:hover:to-red-600 md:shadow-lg md:shadow-red-600/30">
               GET STARTED TODAY
             </button>
           </div>
         </section>
       </main>
+
+      <style jsx>{`
+        @media (max-width: 767px) {
+          .mobile-slide-card {
+            animation: mobileSlideUnder 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          }
+          
+          @keyframes mobileSlideUnder {
+            0% {
+              transform: translateY(100%) translateZ(0);
+              opacity: 0;
+            }
+            100% {
+              transform: translateY(0) translateZ(0);
+              opacity: 1;
+            }
+          }
+        }
+      `}</style>
     </>
   );
 }

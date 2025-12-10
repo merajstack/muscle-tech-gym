@@ -38,11 +38,11 @@ export default function EquipmentPage() {
     <>
       <Navbar />
       <main className="min-h-screen bg-black pt-20">
-        {/* Hero Section */}
-        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-black to-zinc-900">
+        {/* Hero Section - Desktop gradient */}
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-black to-zinc-900 md:bg-gradient-to-br md:from-black md:via-emerald-950/20 md:to-zinc-900">
           <div className="container mx-auto px-4 sm:px-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
-              STATE-OF-THE-ART <span className="text-red-600">EQUIPMENT</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-emerald-200 md:to-white md:bg-clip-text md:text-transparent">
+              STATE-OF-THE-ART <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-emerald-500 md:bg-clip-text md:text-transparent">EQUIPMENT</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl">
               Over 100 pieces of premium equipment for every training style
@@ -51,7 +51,7 @@ export default function EquipmentPage() {
         </section>
 
         {/* Equipment Categories */}
-        <section className="py-12 sm:py-16 md:py-20 bg-zinc-900">
+        <section className="py-12 sm:py-16 md:py-20 bg-zinc-900 md:bg-gradient-to-b md:from-zinc-900 md:via-black md:to-zinc-900">
           <div className="container mx-auto px-4 sm:px-6">
             {equipmentCategories.map((category, categoryIndex) => (
               <div
@@ -61,14 +61,14 @@ export default function EquipmentPage() {
                   animation: `fadeInUp 0.6s ease-out ${categoryIndex * 0.2}s both`,
                 }}
               >
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-6 sm:mb-8">
-                  <span className="text-red-600">//</span> {category.category}
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-6 sm:mb-8 md:bg-gradient-to-r md:from-white md:to-gray-300 md:bg-clip-text md:text-transparent">
+                  <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-emerald-500 md:bg-clip-text md:text-transparent">//</span> {category.category}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                   {category.items.map((item, itemIndex) => (
                     <div
                       key={itemIndex}
-                      className="bg-black border border-zinc-800 rounded-sm overflow-hidden hover:border-red-600 transition-all duration-300 group"
+                      className="bg-black border border-zinc-800 rounded-sm overflow-hidden hover:border-red-600 transition-all duration-300 group md:bg-gradient-to-br md:from-zinc-900 md:via-zinc-800/50 md:to-zinc-900 md:border-zinc-700/50 md:hover:shadow-lg md:hover:shadow-emerald-600/20"
                       style={{
                         animation: `fadeInUp 0.5s ease-out ${
                           categoryIndex * 0.2 + itemIndex * 0.1
@@ -86,7 +86,7 @@ export default function EquipmentPage() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       </div>
                       <div className="p-4 sm:p-6">
-                        <h3 className="text-lg sm:text-xl font-black text-white mb-2 group-hover:text-red-600 transition-colors">
+                        <h3 className="text-lg sm:text-xl font-black text-white mb-2 group-hover:text-red-600 transition-colors md:bg-gradient-to-r md:from-white md:to-gray-300 md:bg-clip-text md:text-transparent md:group-hover:from-red-500 md:group-hover:to-emerald-500">
                           {item.name}
                         </h3>
                         <p className="text-gray-500 text-xs sm:text-sm">{item.description}</p>
@@ -100,19 +100,19 @@ export default function EquipmentPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 sm:py-32 md:py-40 bg-black border-t border-zinc-800">
+        <section className="py-20 sm:py-32 md:py-40 bg-black border-t border-zinc-800 md:bg-gradient-to-b md:from-zinc-900 md:via-emerald-950/10 md:to-black">
           <div className="container mx-auto px-4 sm:px-6 text-center">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4">
-              EXPERIENCE OUR <span className="text-red-600">FACILITIES</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-emerald-200 md:to-white md:bg-clip-text md:text-transparent">
+              EXPERIENCE OUR <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-emerald-500 md:bg-clip-text md:text-transparent">FACILITIES</span>
             </h2>
             <p className="text-gray-400 mb-8 text-sm sm:text-base md:text-lg">
               Visit us for a free trial and equipment tour
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-all duration-300 hover:scale-105">
+              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-all duration-300 hover:scale-105 md:bg-gradient-to-r md:from-red-600 md:to-emerald-600 md:hover:from-red-500 md:hover:to-emerald-500 md:shadow-lg md:shadow-red-600/30">
                 SCHEDULE FREE TRIAL
               </button>
-              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-transparent border-2 border-white text-white font-bold text-base sm:text-lg rounded-sm hover:bg-white hover:text-black transition-all duration-300">
+              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-transparent border-2 border-white text-white font-bold text-base sm:text-lg rounded-sm hover:bg-white hover:text-black transition-all duration-300 md:hover:shadow-lg md:hover:shadow-white/20">
                 CONTACT US
               </button>
             </div>
