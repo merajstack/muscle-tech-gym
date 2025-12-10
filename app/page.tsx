@@ -187,7 +187,7 @@ export default function Home() {
               </div>
               <div className="relative h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden md:shadow-2xl md:shadow-red-600/20">
                 <Image 
-                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/friends-1765303075554.webp"
+                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/brand-story-1765373700107.png"
                   alt="MuscleTech Team"
                   fill
                   className="object-cover"
