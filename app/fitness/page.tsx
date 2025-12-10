@@ -75,6 +75,9 @@ export default function FitnessPage() {
     return angles[index] || { x: 0, y: 0, rotate: 0 };
   };
 
+  const topCardIndex = visibleCards.length > 0 ? visibleCards[visibleCards.length - 1] : -1;
+  const topCard = topCardIndex >= 0 ? allCategories[topCardIndex] : null;
+
   return (
     <>
       <Navbar />
@@ -105,10 +108,11 @@ export default function FitnessPage() {
                       const isVisible = visibleCards.includes(index);
                       const stackPosition = visibleCards.indexOf(index);
                       const isFromLeft = index % 2 === 0;
-                      const verticalOffset = stackPosition >= 0 ? stackPosition * 12 : 0;
-                      const horizontalOffset = stackPosition >= 0 ? (stackPosition % 2 === 0 ? stackPosition * 2 : -stackPosition * 2) : 0;
-                      const rotation = stackPosition >= 0 ? (stackPosition % 2 === 0 ? stackPosition * 0.5 : -stackPosition * 0.5) : 0;
-                      const zIndex = stackPosition >= 0 ? allCategories.length - stackPosition : 0;
+                      const reverseStackPosition = isVisible ? visibleCards.length - 1 - stackPosition : 0;
+                      const verticalOffset = reverseStackPosition * 12;
+                      const horizontalOffset = reverseStackPosition % 2 === 0 ? reverseStackPosition * 2 : -reverseStackPosition * 2;
+                      const rotation = reverseStackPosition % 2 === 0 ? reverseStackPosition * 0.5 : -reverseStackPosition * 0.5;
+                      const zIndex = isVisible ? stackPosition + 1 : 0;
 
                       return (
                         <div
@@ -117,7 +121,7 @@ export default function FitnessPage() {
                           style={{
                             opacity: isVisible ? 1 : 0,
                             transform: isVisible
-                              ? `translateX(${horizontalOffset}px) translateY(${-verticalOffset}px) scale(${1 - stackPosition * 0.02}) rotate(${rotation}deg)`
+                              ? `translateX(${horizontalOffset}px) translateY(${-verticalOffset}px) scale(${1 - reverseStackPosition * 0.02}) rotate(${rotation}deg)`
                               : `translateX(${isFromLeft ? '-100vw' : '100vw'}) scale(0.8) rotate(${isFromLeft ? -15 : 15}deg)`,
                             transitionDuration: '800ms',
                             transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
@@ -128,7 +132,7 @@ export default function FitnessPage() {
                             className="bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden group hover:border-red-600 transition-all duration-500 md:bg-gradient-to-br md:from-zinc-900 md:via-zinc-800/50 md:to-zinc-900 md:border-zinc-700/50"
                             style={{
                               boxShadow: isVisible 
-                                ? `0 ${10 + stackPosition * 5}px ${30 + stackPosition * 10}px rgba(0, 0, 0, 0.5), 0 ${5 + stackPosition * 2}px ${15 + stackPosition * 5}px rgba(220, 38, 38, 0.1)`
+                                ? `0 ${10 + reverseStackPosition * 5}px ${30 + reverseStackPosition * 10}px rgba(0, 0, 0, 0.5), 0 ${5 + reverseStackPosition * 2}px ${15 + reverseStackPosition * 5}px rgba(220, 38, 38, 0.1)`
                                 : 'none',
                             }}
                           >
