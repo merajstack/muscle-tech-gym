@@ -2,9 +2,83 @@
 
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 export default function Home() {
+  const [activeIndex, setActiveIndex] = useState(1);
+  const [isMd, setIsMd] = useState(false);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  const videos = [
+    { id: 0, src: "" },
+    { id: 1, src: "" },
+    { id: 2, src: "" },
+    { id: 3, src: "" },
+  ];
+
+  useEffect(() => {
+    const checkWidth = () => setIsMd(window.innerWidth >= 768);
+    checkWidth();
+    window.addEventListener('resize', checkWidth);
+    return () => window.removeEventListener('resize', checkWidth);
+  }, []);
+
+  const handleVideoPlay = useCallback((index: number) => {
+    videoRefs.current.forEach((video, i) => {
+      if (video && video.src) {
+        if (i === index) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    handleVideoPlay(activeIndex);
+  }, [activeIndex, handleVideoPlay]);
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev > 0 ? prev - 1 : videos.length - 1));
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev < videos.length - 1 ? prev + 1 : 0));
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    }
+  };
+
+  const handleWheel = (e: React.WheelEvent) => {
+    if (Math.abs(e.deltaX) > 30) {
+      if (e.deltaX > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    }
+  };
+
   useEffect(() => {
     const requestFullscreen = async () => {
       try {
@@ -187,57 +261,94 @@ export default function Home() {
             </h2>
           </div>
           
-          {/* Sliding Images Container */}
-          <div className="relative">
-            <div className="flex gap-6 animate-slide-left">
-              {[...Array(8)].map((_, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] h-[350px] sm:h-[400px] md:h-[450px] bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 hover:border-red-600 transition-all duration-300 hover:scale-105 hover:-translate-y-2"
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-zinc-700 text-6xl">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
+          {/* Video Cards Carousel */}
+          <div 
+            ref={containerRef}
+            className="relative flex items-center justify-center h-[450px] sm:h-[500px] md:h-[550px] cursor-grab active:cursor-grabbing"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onWheel={handleWheel}
+          >
+            <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-6">
+              {videos.map((video, index) => {
+                const isActive = index === activeIndex;
+                const distance = Math.abs(index - activeIndex);
+                const isVisible = distance <= 2;
+                
+                const translateX = (index - activeIndex) * (isMd ? 320 : 280);
+
+                return (
+                  <div
+                    key={video.id}
+                    onClick={() => setActiveIndex(index)}
+                    className="absolute cursor-pointer"
+                    style={{
+                      transform: `translateX(${translateX}px) scale(${isActive ? 1.15 : 0.85}) translateZ(${isActive ? 50 : 0}px)`,
+                      opacity: isActive ? 1 : isVisible ? 0.5 : 0,
+                      zIndex: isActive ? 10 : 5 - distance,
+                      transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                      pointerEvents: isVisible ? 'auto' : 'none',
+                    }}
+                  >
+                    <div 
+                      className={`w-[240px] sm:w-[280px] md:w-[320px] h-[320px] sm:h-[380px] md:h-[420px] rounded-xl overflow-hidden border-2 ${isActive ? 'border-red-600 shadow-2xl shadow-red-600/30' : 'border-zinc-700'} bg-zinc-900`}
+                    >
+                      {video.src ? (
+                        <video
+                          ref={(el) => { videoRefs.current[index] = el; }}
+                          src={video.src}
+                          muted
+                          loop
+                          playsInline
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-zinc-900">
+                          <div className="text-zinc-600 flex flex-col items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span className="text-sm">Video {index + 1}</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              ))}
-              {/* Duplicate for seamless loop */}
-              {[...Array(8)].map((_, index) => (
-                <div
-                  key={`duplicate-${index}`}
-                  className="flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] h-[350px] sm:h-[400px] md:h-[450px] bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 hover:border-red-600 transition-all duration-300 hover:scale-105 hover:-translate-y-2"
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-zinc-700 text-6xl">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
+
+            {/* Navigation Arrows */}
+            <button 
+              onClick={handlePrev}
+              className="absolute left-4 sm:left-8 md:left-16 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-600/90 hover:bg-red-600 text-white flex items-center justify-center transition-all duration-200 hover:scale-110"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button 
+              onClick={handleNext}
+              className="absolute right-4 sm:right-8 md:right-16 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-600/90 hover:bg-red-600 text-white flex items-center justify-center transition-all duration-200 hover:scale-110"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
-          
-          <style jsx>{`
-            @keyframes slide-left {
-              0% {
-                transform: translateX(0);
-              }
-              100% {
-                transform: translateX(-50%);
-              }
-            }
-            .animate-slide-left {
-              animation: slide-left 30s linear infinite;
-            }
-            .animate-slide-left:hover {
-              animation-play-state: paused;
-            }
-          `}</style>
+
+          {/* Dots Indicator */}
+          <div className="flex justify-center gap-2 mt-6">
+            {videos.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveIndex(index)}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${index === activeIndex ? 'bg-red-600 w-8' : 'bg-zinc-600 hover:bg-zinc-500'}`}
+              />
+            ))}
+          </div>
         </section>
       </main>
     </>
