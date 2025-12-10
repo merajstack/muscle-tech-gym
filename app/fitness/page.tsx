@@ -123,7 +123,6 @@ export default function FitnessPage() {
                     key={category.id}
                     className={`transition-all duration-700 ease-out ${isMobile ? 'mobile-slide-card' : ''}`}
                     style={{
-                      marginTop: isMobile ? 0 : `${index * 60}px`,
                       opacity: isMobile ? mobileOpacity : currentOpacity,
                       transform: isMobile 
                         ? `translateY(${mobileSlideOffset}%) translateZ(${-index * 20}px)` 
