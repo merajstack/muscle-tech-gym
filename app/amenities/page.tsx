@@ -41,24 +41,24 @@ export default function AmenitiesPage() {
       <Navbar />
       <main className="min-h-screen bg-black pt-20">
         {/* Hero Section */}
-        <section className="py-20 bg-gradient-to-b from-black to-zinc-900">
-          <div className="container mx-auto px-6">
-            <h1 className="text-6xl md:text-7xl font-black text-white mb-4">
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-black to-zinc-900">
+          <div className="container mx-auto px-4 sm:px-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4">
               AMENITIES & <span className="text-red-600">SERVICES</span>
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl">
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl">
               Everything you need for the ultimate fitness experience
             </p>
           </div>
         </section>
 
         {/* Z-Axis Replacement Animation Section */}
-        <section className="py-20 min-h-screen relative" ref={triggerRef}>
-          <div className="container mx-auto px-6">
+        <section className="py-12 sm:py-16 md:py-20 min-h-screen relative" ref={triggerRef}>
+          <div className="container mx-auto px-4 sm:px-6">
             <div className="relative" style={{ perspective: "2000px" }}>
               {/* Amenities Cards - Slide Back */}
               <div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-1000 ease-out"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-1000 ease-out"
                 style={{
                   transform: showServices
                     ? "translateZ(-400px) scale(0.8)"
@@ -76,21 +76,21 @@ export default function AmenitiesPage() {
                       transitionDelay: `${index * 100}ms`,
                     }}
                   >
-                    <div className="relative h-48 bg-zinc-800 overflow-hidden">
+                    <div className="relative h-40 sm:h-48 bg-zinc-800 overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
                       <Image
                         src={item.image}
                         alt={item.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       />
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-2xl font-black text-white mb-2 group-hover:text-red-600 transition-colors">
+                    <div className="p-4 sm:p-6">
+                      <h3 className="text-xl sm:text-2xl font-black text-white mb-2 group-hover:text-red-600 transition-colors">
                         {item.title}
                       </h3>
-                      <p className="text-gray-400 text-sm">{item.description}</p>
+                      <p className="text-gray-400 text-xs sm:text-sm">{item.description}</p>
                     </div>
                   </div>
                 ))}
@@ -98,7 +98,7 @@ export default function AmenitiesPage() {
 
               {/* Services Cards - Slide Forward */}
               <div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-1000 ease-out"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-1000 ease-out"
                 style={{
                   transform: showServices
                     ? "translateZ(0) scale(1)"
@@ -117,29 +117,29 @@ export default function AmenitiesPage() {
                       transitionDelay: `${index * 100}ms`,
                     }}
                   >
-                    <div className="relative h-48 bg-zinc-800 overflow-hidden">
+                    <div className="relative h-40 sm:h-48 bg-zinc-800 overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-t from-red-950/50 to-transparent z-10" />
                       <Image
                         src={item.image}
                         alt={item.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       />
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-2xl font-black text-red-600 mb-2 group-hover:text-red-500 transition-colors">
+                    <div className="p-4 sm:p-6">
+                      <h3 className="text-xl sm:text-2xl font-black text-red-600 mb-2 group-hover:text-red-500 transition-colors">
                         {item.title}
                       </h3>
-                      <p className="text-gray-400 text-sm">{item.description}</p>
+                      <p className="text-gray-400 text-xs sm:text-sm">{item.description}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="text-center mt-12">
-              <p className="text-gray-500 text-sm">
+            <div className="text-center mt-8 sm:mt-12">
+              <p className="text-gray-500 text-xs sm:text-sm">
                 {showServices ? "Viewing Professional Services" : "Viewing Amenities - Scroll to see services"}
               </p>
             </div>
@@ -147,13 +147,13 @@ export default function AmenitiesPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-40 bg-zinc-900">
-          <div className="container mx-auto px-6 text-center">
-            <h2 className="text-4xl font-black text-white mb-4">
+        <section className="py-20 sm:py-32 md:py-40 bg-zinc-900">
+          <div className="container mx-auto px-4 sm:px-6 text-center">
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               EXPERIENCE THE <span className="text-red-600">DIFFERENCE</span>
             </h2>
-            <p className="text-gray-400 mb-8">Book a free tour of our facilities</p>
-            <button className="px-8 py-4 bg-red-600 text-white font-bold text-lg rounded-sm hover:bg-red-700 transition-colors duration-300">
+            <p className="text-gray-400 mb-8 text-sm sm:text-base">Book a free tour of our facilities</p>
+            <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-colors duration-300">
               SCHEDULE TOUR
             </button>
           </div>
