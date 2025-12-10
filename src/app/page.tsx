@@ -7,6 +7,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState(1);
   const [isMd, setIsMd] = useState(false);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef(0);
@@ -25,6 +26,14 @@ export default function Home() {
     window.addEventListener('resize', checkWidth);
     return () => window.removeEventListener('resize', checkWidth);
   }, []);
+
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev < videos.length - 1 ? prev + 1 : 0));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, videos.length]);
 
   const handleVideoPlay = useCallback((index: number) => {
     videoRefs.current.forEach((video, i) => {
