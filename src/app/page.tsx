@@ -175,6 +175,70 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Success Stories Section */}
+        <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800 overflow-hidden">
+          <div className="container mx-auto px-4 sm:px-6">
+            <h2 
+              className="text-4xl sm:text-5xl md:text-6xl text-white mb-12 text-center"
+              style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
+            >
+              SUCCESS <span className="text-red-600">STORIES</span>
+            </h2>
+          </div>
+          
+          {/* Sliding Images Container */}
+          <div className="relative">
+            <div className="flex gap-6 animate-slide-left">
+              {[...Array(8)].map((_, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] h-[350px] sm:h-[400px] md:h-[450px] bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 hover:border-red-600 transition-all duration-300 hover:scale-105 hover:-translate-y-2"
+                >
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-zinc-700 text-6xl">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {/* Duplicate for seamless loop */}
+              {[...Array(8)].map((_, index) => (
+                <div
+                  key={`duplicate-${index}`}
+                  className="flex-shrink-0 w-[280px] sm:w-[320px] md:w-[380px] h-[350px] sm:h-[400px] md:h-[450px] bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 hover:border-red-600 transition-all duration-300 hover:scale-105 hover:-translate-y-2"
+                >
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-zinc-700 text-6xl">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <style jsx>{`
+            @keyframes slide-left {
+              0% {
+                transform: translateX(0);
+              }
+              100% {
+                transform: translateX(-50%);
+              }
+            }
+            .animate-slide-left {
+              animation: slide-left 30s linear infinite;
+            }
+            .animate-slide-left:hover {
+              animation-play-state: paused;
+            }
+          `}</style>
+        </section>
       </main>
     </>
   );
