@@ -14,10 +14,10 @@ export default function Home() {
   const touchEndX = useRef(0);
 
   const videos = [
-    { id: 0, src: "" },
-    { id: 1, src: "" },
-    { id: 2, src: "" },
-    { id: 3, src: "" },
+    { id: 0, src: "https://videos.pexels.com/video-files/4761563/4761563-uhd_1440_2560_25fps.mp4" },
+    { id: 1, src: "https://videos.pexels.com/video-files/4754029/4754029-uhd_1440_2560_25fps.mp4" },
+    { id: 2, src: "https://videos.pexels.com/video-files/4761445/4761445-uhd_1440_2560_25fps.mp4" },
+    { id: 3, src: "https://videos.pexels.com/video-files/4754021/4754021-uhd_1440_2560_25fps.mp4" },
   ];
 
   useEffect(() => {
