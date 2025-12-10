@@ -38,6 +38,7 @@ export default function FitnessPage() {
   const [imageTransition, setImageTransition] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileScrollIndex, setMobileScrollIndex] = useState(0);
+  const [scrollAnimationTriggered, setScrollAnimationTriggered] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,6 +53,10 @@ export default function FitnessPage() {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = (scrollTop / docHeight) * 100;
+      
+      if (scrollPercent >= 20 && !scrollAnimationTriggered) {
+        setScrollAnimationTriggered(true);
+      }
       
       setImageTransition(scrollPercent >= 55);
       
@@ -81,7 +86,7 @@ export default function FitnessPage() {
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isMobile]);
+  }, [isMobile, scrollAnimationTriggered]);
 
   const displayCategories = showReplacement ? replacementCategories : initialCategories;
 
@@ -104,7 +109,7 @@ export default function FitnessPage() {
         {/* Staggered Triangle Layout with Card Replacement */}
         <section className="py-12 sm:py-16 md:py-20 min-h-screen md:bg-gradient-to-b md:from-zinc-900 md:via-black md:to-zinc-900" ref={triggerRef}>
           <div className="container mx-auto px-4 sm:px-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 relative">
+            <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 relative ${isMobile ? 'mobile-stack-container' : ''}`}>
               {displayCategories.map((category, index) => {
                 const exitOpacity = showReplacement ? 0 : 1 - transitionProgress;
                 const enterOpacity = showReplacement ? transitionProgress * 2 - 1 : 0;
@@ -114,22 +119,25 @@ export default function FitnessPage() {
                 const enterTransform = showReplacement ? (1 - transitionProgress) * 50 : 50;
                 const currentTransform = showReplacement ? enterTransform : exitTransform;
 
-                const mobileSlideOffset = isMobile ? (index - mobileScrollIndex) * 100 : 0;
-                const mobileZIndex = isMobile ? displayCategories.length - index : 1;
-                const mobileOpacity = isMobile ? (index <= mobileScrollIndex ? 1 : 0.3) : currentOpacity;
+                const isCardVisible = isMobile ? index <= mobileScrollIndex : true;
+                const mobileStackOffset = isMobile ? (mobileScrollIndex - index) * 8 : 0;
 
                 return (
                   <div
                     key={category.id}
-                    className={`transition-all duration-700 ease-out ${isMobile ? 'mobile-slide-card' : ''}`}
+                    className={`transition-all ease-out ${isMobile ? 'mobile-stack-card' : ''}`}
                     style={{
-                      opacity: isMobile ? mobileOpacity : currentOpacity,
+                      opacity: isMobile 
+                        ? (isCardVisible ? 1 : 0) 
+                        : (scrollAnimationTriggered ? currentOpacity : 0),
                       transform: isMobile 
-                        ? `translateY(${mobileSlideOffset}%) translateZ(${-index * 20}px)` 
-                        : `translateY(${currentTransform}px) scale(${0.95 + currentOpacity * 0.05})`,
+                        ? `translateY(${isCardVisible ? mobileStackOffset : 100}px) scale(${isCardVisible ? 1 - (mobileScrollIndex - index) * 0.02 : 0.9})` 
+                        : `translateY(${scrollAnimationTriggered ? currentTransform : 60}px) scale(${scrollAnimationTriggered ? 0.95 + currentOpacity * 0.05 : 0.9})`,
+                      transitionDuration: isMobile ? '600ms' : '800ms',
                       transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-                      zIndex: mobileZIndex,
+                      zIndex: isMobile ? (isCardVisible ? displayCategories.length - index : 0) : 1,
                       position: isMobile ? 'relative' : 'relative',
+                      transitionDelay: isMobile ? '0ms' : `${index * 100}ms`,
                     }}
                   >
                     <div className="bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-500 md:bg-gradient-to-br md:from-zinc-900 md:via-zinc-800/50 md:to-zinc-900 md:border-zinc-700/50 md:hover:shadow-lg md:hover:shadow-red-600/20">
@@ -208,19 +216,12 @@ export default function FitnessPage() {
 
       <style jsx>{`
         @media (max-width: 767px) {
-          .mobile-slide-card {
-            animation: mobileSlideUnder 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          .mobile-stack-container {
+            perspective: 1000px;
           }
           
-          @keyframes mobileSlideUnder {
-            0% {
-              transform: translateY(100%) translateZ(0);
-              opacity: 0;
-            }
-            100% {
-              transform: translateY(0) translateZ(0);
-              opacity: 1;
-            }
+          .mobile-stack-card {
+            transform-origin: center bottom;
           }
         }
       `}</style>

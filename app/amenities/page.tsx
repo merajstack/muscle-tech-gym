@@ -79,7 +79,7 @@ export default function AmenitiesPage() {
             <div className="relative" style={{ perspective: "2000px" }}>
               {/* Amenities Cards - Slide Back */}
               <div
-                className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-1000 ease-out ${isMobile ? 'mobile-cards-container' : ''}`}
+                className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-1000 ease-out ${isMobile ? 'mobile-stack-container' : ''}`}
                 style={{
                   transform: showServices
                     ? "translateZ(-400px) scale(0.8)"
@@ -90,20 +90,19 @@ export default function AmenitiesPage() {
                 }}
               >
                 {amenitiesData.map((item, index) => {
-                  const mobileSlideOffset = isMobile ? (index - mobileScrollIndex) * 100 : 0;
-                  const mobileZIndex = isMobile ? amenitiesData.length - index : 1;
-                  const mobileOpacity = isMobile ? (index <= mobileScrollIndex ? 1 : 0.3) : 1;
+                  const isCardVisible = isMobile ? index <= mobileScrollIndex : true;
+                  const mobileStackOffset = isMobile ? (mobileScrollIndex - index) * 8 : 0;
 
                   return (
                     <div
                       key={item.id}
-                      className={`bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-300 md:bg-gradient-to-br md:from-zinc-900 md:via-zinc-800/50 md:to-zinc-900 md:border-zinc-700/50 md:hover:shadow-lg md:hover:shadow-purple-600/20 ${isMobile ? 'mobile-slide-card' : ''}`}
+                      className={`bg-zinc-900 border border-zinc-800 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-600 ease-out md:bg-gradient-to-br md:from-zinc-900 md:via-zinc-800/50 md:to-zinc-900 md:border-zinc-700/50 md:hover:shadow-lg md:hover:shadow-purple-600/20 ${isMobile ? 'mobile-stack-card' : ''}`}
                       style={{
-                        transitionDelay: `${index * 100}ms`,
+                        transitionDelay: isMobile ? '0ms' : `${index * 100}ms`,
                         ...(isMobile && {
-                          transform: `translateY(${mobileSlideOffset}%) translateZ(${-index * 20}px)`,
-                          zIndex: mobileZIndex,
-                          opacity: mobileOpacity,
+                          transform: `translateY(${isCardVisible ? mobileStackOffset : 100}px) scale(${isCardVisible ? 1 - (mobileScrollIndex - index) * 0.02 : 0.9})`,
+                          zIndex: isCardVisible ? amenitiesData.length - index : 0,
+                          opacity: isCardVisible ? 1 : 0,
                         }),
                       }}
                     >
@@ -130,7 +129,7 @@ export default function AmenitiesPage() {
 
               {/* Services Cards - Slide Forward */}
               <div
-                className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-1000 ease-out ${isMobile ? 'mobile-cards-container' : ''}`}
+                className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-1000 ease-out ${isMobile ? 'mobile-stack-container' : ''}`}
                 style={{
                   transform: showServices
                     ? "translateZ(0) scale(1)"
@@ -142,20 +141,19 @@ export default function AmenitiesPage() {
                 }}
               >
                 {servicesData.map((item, index) => {
-                  const mobileSlideOffset = isMobile ? (index - mobileScrollIndex) * 100 : 0;
-                  const mobileZIndex = isMobile ? servicesData.length - index : 1;
-                  const mobileOpacity = isMobile ? (index <= mobileScrollIndex ? 1 : 0.3) : 1;
+                  const isCardVisible = isMobile ? index <= mobileScrollIndex : true;
+                  const mobileStackOffset = isMobile ? (mobileScrollIndex - index) * 8 : 0;
 
                   return (
                     <div
                       key={item.id}
-                      className={`bg-zinc-900 border border-red-900 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-300 md:bg-gradient-to-br md:from-zinc-900 md:via-red-950/30 md:to-zinc-900 md:border-red-800/50 md:hover:shadow-lg md:hover:shadow-red-600/30 ${isMobile ? 'mobile-slide-card' : ''}`}
+                      className={`bg-zinc-900 border border-red-900 rounded-sm overflow-hidden group hover:border-red-600 transition-all duration-600 ease-out md:bg-gradient-to-br md:from-zinc-900 md:via-red-950/30 md:to-zinc-900 md:border-red-800/50 md:hover:shadow-lg md:hover:shadow-red-600/30 ${isMobile ? 'mobile-stack-card' : ''}`}
                       style={{
-                        transitionDelay: `${index * 100}ms`,
+                        transitionDelay: isMobile ? '0ms' : `${index * 100}ms`,
                         ...(isMobile && {
-                          transform: `translateY(${mobileSlideOffset}%) translateZ(${-index * 20}px)`,
-                          zIndex: mobileZIndex,
-                          opacity: mobileOpacity,
+                          transform: `translateY(${isCardVisible ? mobileStackOffset : 100}px) scale(${isCardVisible ? 1 - (mobileScrollIndex - index) * 0.02 : 0.9})`,
+                          zIndex: isCardVisible ? servicesData.length - index : 0,
+                          opacity: isCardVisible ? 1 : 0,
                         }),
                       }}
                     >
@@ -205,24 +203,12 @@ export default function AmenitiesPage() {
 
       <style jsx>{`
         @media (max-width: 767px) {
-          .mobile-slide-card {
-            animation: mobileSlideUnder 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-          }
-          
-          @keyframes mobileSlideUnder {
-            0% {
-              transform: translateY(100%) translateZ(0);
-              opacity: 0;
-            }
-            100% {
-              transform: translateY(0) translateZ(0);
-              opacity: 1;
-            }
-          }
-          
-          .mobile-cards-container {
+          .mobile-stack-container {
             perspective: 1000px;
-            transform-style: preserve-3d;
+          }
+          
+          .mobile-stack-card {
+            transform-origin: center bottom;
           }
         }
       `}</style>

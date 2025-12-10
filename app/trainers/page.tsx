@@ -88,7 +88,7 @@ export default function TrainersPage() {
         {/* Hero Section - Desktop gradient */}
         <section className="h-screen flex items-center justify-center bg-black md:bg-gradient-to-br md:from-black md:via-cyan-950/20 md:to-black">
           <div className="text-center">
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter md:bg-gradient-to-r md:from-white md:via-cyan-200 md:to-white md:bg-clip-text md:text-transparent">
+            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter">
               TRAINERS
             </h1>
             <p className="text-gray-500 text-base sm:text-lg mt-6 tracking-wide">
@@ -171,7 +171,7 @@ export default function TrainersPage() {
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
                             <div className="text-center z-20">
                               <Upload className="w-10 h-10 text-zinc-600 mx-auto mb-2" />
-                              <p className="text-zinc-600 text-xs">Upload Trainer Photo</p>
+                              <p className="text-zinc-600 text-xs">PHOTO</p>
                             </div>
                           </div>
                           <div className="p-4">

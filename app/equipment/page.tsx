@@ -98,26 +98,6 @@ export default function EquipmentPage() {
             ))}
           </div>
         </section>
-
-        {/* CTA Section */}
-        <section className="py-20 sm:py-32 md:py-40 bg-black border-t border-zinc-800 md:bg-gradient-to-b md:from-zinc-900 md:via-emerald-950/10 md:to-black">
-          <div className="container mx-auto px-4 sm:px-6 text-center">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 md:bg-gradient-to-r md:from-white md:via-emerald-200 md:to-white md:bg-clip-text md:text-transparent">
-              EXPERIENCE OUR <span className="text-red-600 md:bg-gradient-to-r md:from-red-500 md:to-emerald-500 md:bg-clip-text md:text-transparent">FACILITIES</span>
-            </h2>
-            <p className="text-gray-400 mb-8 text-sm sm:text-base md:text-lg">
-              Visit us for a free trial and equipment tour
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-red-600 text-white font-bold text-base sm:text-lg rounded-sm hover:bg-red-700 transition-all duration-300 hover:scale-105 md:bg-gradient-to-r md:from-red-600 md:to-emerald-600 md:hover:from-red-500 md:hover:to-emerald-500 md:shadow-lg md:shadow-red-600/30">
-                SCHEDULE FREE TRIAL
-              </button>
-              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-transparent border-2 border-white text-white font-bold text-base sm:text-lg rounded-sm hover:bg-white hover:text-black transition-all duration-300 md:hover:shadow-lg md:hover:shadow-white/20">
-                CONTACT US
-              </button>
-            </div>
-          </div>
-        </section>
       </main>
 
       <style jsx>{`
