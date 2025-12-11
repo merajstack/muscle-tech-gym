@@ -180,7 +180,7 @@ export default function Home() {
           {/* Background Image */}
           <div className="absolute inset-0">
             <Image 
-              src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/main-page-1765286459157.avif"
+              src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/Screenshot-2025-12-11-at-7.38.17-PM-1765462114771.png?width=8000&height=8000&resize=contain"
               alt="Muscle Tech Hero Background"
               fill
               className="object-cover"
