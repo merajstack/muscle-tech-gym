@@ -444,35 +444,33 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="relative h-[600px] sm:h-[700px] w-full max-w-[1400px] mx-auto px-4 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-full">
-              {/* Column 1 */}
-              <div className="h-full">
-                <Marquee vertical autoFill pauseOnHover speed={30} className="h-full overflow-hidden">
-                  {firstColumn.map((review) => (
-                    <ReviewCard key={review.id} review={review} />
-                  ))}
-                </Marquee>
-              </div>
+          <div className="relative w-full space-y-6 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            {/* Row 1 - scrolls left */}
+            <Marquee autoFill pauseOnHover speed={30}>
+              {firstColumn.map((review) => (
+                <div key={review.id} className="w-[350px] mx-3">
+                  <ReviewCard review={review} />
+                </div>
+              ))}
+            </Marquee>
 
-              {/* Column 2 */}
-              <div className="hidden md:block h-full mt-10 md:mt-0">
-                <Marquee vertical autoFill pauseOnHover speed={50} className="h-full overflow-hidden">
-                  {secondColumn.map((review) => (
-                    <ReviewCard key={review.id} review={review} />
-                  ))}
-                </Marquee>
-              </div>
+            {/* Row 2 - scrolls right */}
+            <Marquee autoFill pauseOnHover speed={40} direction="right">
+              {secondColumn.map((review) => (
+                <div key={review.id} className="w-[350px] mx-3">
+                  <ReviewCard review={review} />
+                </div>
+              ))}
+            </Marquee>
 
-              {/* Column 3 */}
-              <div className="hidden lg:block h-full">
-                <Marquee vertical autoFill pauseOnHover speed={40} className="h-full overflow-hidden">
-                  {thirdColumn.map((review) => (
-                    <ReviewCard key={review.id} review={review} />
-                  ))}
-                </Marquee>
-              </div>
-            </div>
+            {/* Row 3 - scrolls left */}
+            <Marquee autoFill pauseOnHover speed={35}>
+              {thirdColumn.map((review) => (
+                <div key={review.id} className="w-[350px] mx-3">
+                  <ReviewCard review={review} />
+                </div>
+              ))}
+            </Marquee>
           </div>
         </section>
       </main>
