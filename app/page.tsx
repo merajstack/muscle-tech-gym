@@ -204,7 +204,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               <div className="relative h-[400px] sm:h-[500px] md:h-[600px] rounded-lg overflow-hidden order-2 md:order-1 md:shadow-2xl md:shadow-orange-600/20">
                 <Image 
-                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/reciption-1765303353505.webp"
+                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/eqp2-1765427606311.webp"
                   alt="Muscle Tech Gym Interior"
                   fill
                   className="object-cover"
