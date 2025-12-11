@@ -36,6 +36,7 @@ export default function Home() {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const [reviewIndex, setReviewIndex] = useState(0);
+  const [animationPhase, setAnimationPhase] = useState(0);
 
   const videos = [
     { id: 0, src: "https://videos.pexels.com/video-files/4761563/4761563-uhd_1440_2560_25fps.mp4" },
@@ -60,10 +61,16 @@ export default function Home() {
   }, [isAutoPlaying, videos.length]);
 
   useEffect(() => {
-    const reviewInterval = setInterval(() => {
-      setReviewIndex((prev) => (prev + 1) % reviews.length);
-    }, 2500);
-    return () => clearInterval(reviewInterval);
+    const animationInterval = setInterval(() => {
+      setAnimationPhase((prev) => {
+        if (prev >= 100) {
+          setReviewIndex((prevIndex) => (prevIndex + 1) % reviews.length);
+          return 0;
+        }
+        return prev + 2;
+      });
+    }, 50);
+    return () => clearInterval(animationInterval);
   }, []);
 
   const handleVideoPlay = useCallback((index: number) => {
@@ -415,32 +422,47 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="relative h-[500px] sm:h-[550px] md:h-[600px] overflow-hidden flex items-center justify-center perspective-[1000px]">
-            <div className="relative w-[300px] sm:w-[350px] md:w-[400px] h-[400px] sm:h-[450px] md:h-[500px]">
-              {reviews.map((review, index) => {
-                const position = (index - reviewIndex + reviews.length) % reviews.length;
-                const isVisible = position < 5;
+          <div className="relative h-[450px] sm:h-[500px] md:h-[550px] overflow-hidden flex items-center justify-center" style={{ perspective: '1200px' }}>
+            <div className="relative w-[320px] sm:w-[380px] md:w-[420px] h-[280px] sm:h-[300px] md:h-[320px]" style={{ transformStyle: 'preserve-3d' }}>
+              {[0, 1, 2, 3, 4].map((stackPosition) => {
+                const actualIndex = (reviewIndex + stackPosition) % reviews.length;
+                const review = reviews[actualIndex];
                 
-                const translateY = position * 20;
-                const scale = 1 - position * 0.05;
-                const opacity = position === 0 ? 1 : position < 5 ? 0.9 - position * 0.15 : 0;
-                const zIndex = reviews.length - position;
-                const rotateX = position * 2;
+                let translateY = stackPosition * 25;
+                let translateZ = -stackPosition * 40;
+                let scale = 1 - stackPosition * 0.04;
+                let opacity = 1 - stackPosition * 0.2;
+                
+                if (stackPosition === 0) {
+                  const progress = animationPhase / 100;
+                  translateY = -progress * 150;
+                  translateZ = progress * 100;
+                  scale = 1 + progress * 0.1;
+                  opacity = 1 - progress;
+                } else {
+                  const progress = animationPhase / 100;
+                  translateY = (stackPosition * 25) - (progress * 25);
+                  translateZ = (-stackPosition * 40) + (progress * 40);
+                  scale = (1 - stackPosition * 0.04) + (progress * 0.04);
+                  opacity = (1 - stackPosition * 0.2) + (progress * 0.2);
+                  opacity = Math.min(opacity, 1);
+                }
 
                 return (
                   <div
-                    key={review.id}
-                    className="absolute inset-0 transition-all duration-700 ease-out"
+                    key={`${review.id}-${stackPosition}`}
+                    className="absolute inset-0"
                     style={{
-                      transform: `translateY(${-translateY}px) scale(${scale}) rotateX(${rotateX}deg)`,
-                      opacity: isVisible ? opacity : 0,
-                      zIndex,
+                      transform: `translateY(${translateY}px) translateZ(${translateZ}px) scale(${scale})`,
+                      opacity: Math.max(0, opacity),
+                      zIndex: 10 - stackPosition,
                       transformStyle: 'preserve-3d',
+                      transition: stackPosition === 0 && animationPhase === 0 ? 'none' : 'transform 0.05s linear, opacity 0.05s linear',
                     }}
                   >
-                    <div className="w-full h-auto bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 rounded-2xl p-6 sm:p-8 border border-zinc-700/50 shadow-2xl shadow-black/50">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-red-600">
+                    <div className="w-full h-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 rounded-2xl p-5 sm:p-6 border border-zinc-700/50 shadow-2xl shadow-black/60">
+                      <div className="flex items-center gap-4 mb-3">
+                        <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-red-600 flex-shrink-0">
                           <Image
                             src={review.avatar}
                             alt={review.name}
@@ -449,21 +471,21 @@ export default function Home() {
                           />
                         </div>
                         <div>
-                          <h4 className="text-white font-bold text-lg sm:text-xl">{review.name}</h4>
-                          <div className="flex gap-1">
+                          <h4 className="text-white font-bold text-base sm:text-lg">{review.name}</h4>
+                          <div className="flex gap-0.5">
                             {[...Array(5)].map((_, i) => (
-                              <svg key={i} className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 fill-current" viewBox="0 0 20 20">
+                              <svg key={i} className="w-4 h-4 text-yellow-500 fill-current" viewBox="0 0 20 20">
                                 <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
                               </svg>
                             ))}
                           </div>
                         </div>
                       </div>
-                      <p className="text-gray-300 text-base sm:text-lg leading-relaxed italic">
+                      <p className="text-gray-300 text-sm sm:text-base leading-relaxed italic">
                         "{review.review}"
                       </p>
-                      <div className="mt-4 flex justify-end">
-                        <div className="text-red-600/50 text-4xl sm:text-5xl font-serif">"</div>
+                      <div className="mt-2 flex justify-end">
+                        <div className="text-red-600/40 text-3xl sm:text-4xl font-serif">"</div>
                       </div>
                     </div>
                   </div>
