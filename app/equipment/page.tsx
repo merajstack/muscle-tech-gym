@@ -100,7 +100,19 @@ export default function EquipmentPage() {
         </section>
       </main>
 
+      {/* Footer Banner */}
+      <div className="w-screen bg-red-600 py-3">
+        <p 
+          className="text-white text-center text-lg"
+          style={{ fontFamily: "'Caveat', cursive" }}
+        >
+          developed by webForYou technologies
+        </p>
+      </div>
+
       <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500&display=swap');
+        
         @keyframes fadeInUp {
           from {
             opacity: 0;
