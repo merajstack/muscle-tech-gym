@@ -161,8 +161,11 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Section Divider Line */}
+        <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+
         {/* Brand Story Section */}
-        <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800 md:bg-gradient-to-br md:from-black md:via-red-950/10 md:to-black">
+        <section className="py-12 sm:py-16 md:py-20 bg-black md:bg-gradient-to-br md:from-black md:via-red-950/10 md:to-black">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               <div>
@@ -187,29 +190,30 @@ export default function Home() {
               </div>
               <div className="relative h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden md:shadow-2xl md:shadow-red-600/20">
                 <Image 
-                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/brand-story-1765373700107.png"
+                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/reci-1765428985812.png?width=8000&height=8000&resize=contain"
                   alt="MuscleTech Team"
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-black/45" />
               </div>
             </div>
           </div>
         </section>
 
+        {/* Section Divider Line */}
+        <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+
         {/* Why Choose Us Section */}
-        <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800 md:bg-gradient-to-b md:from-black md:via-orange-950/10 md:to-zinc-900">
+        <section className="py-12 sm:py-16 md:py-20 bg-black md:bg-gradient-to-b md:from-black md:via-orange-950/10 md:to-zinc-900">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
               <div className="relative h-[400px] sm:h-[500px] md:h-[600px] rounded-lg overflow-hidden order-2 md:order-1 md:shadow-2xl md:shadow-orange-600/20">
                 <Image 
-                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/eqp2-1765427606311.webp"
+                  src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/Screenshot-2025-12-11-at-10.24.13-AM-1765429048391.png?width=8000&height=8000&resize=contain"
                   alt="Muscle Tech Gym Interior"
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">
                   <p className="text-red-600 font-bold text-xl sm:text-2xl mb-2">
                     Join the Gym That Invests in You
@@ -262,8 +266,11 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Section Divider Line */}
+        <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+
         {/* Success Stories Section */}
-        <section className="py-12 sm:py-16 md:py-20 bg-black border-t border-zinc-800 overflow-hidden md:bg-gradient-to-b md:from-zinc-900 md:via-red-950/10 md:to-black">
+        <section className="py-12 sm:py-16 md:py-20 bg-black overflow-hidden md:bg-gradient-to-b md:from-zinc-900 md:via-red-950/10 md:to-black">
           <div className="container mx-auto px-4 sm:px-6">
             <h2 
               className="text-4xl sm:text-5xl md:text-6xl text-white mb-12 text-center"
