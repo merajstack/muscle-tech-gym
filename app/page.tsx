@@ -3,28 +3,29 @@
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { useEffect, useRef, useState, useCallback } from "react";
+import Marquee from "react-fast-marquee";
 
 const reviews = [
-  { id: 1, name: "Alex Thompson", review: "Completely transformed my physique in just 3 months. Best gym experience ever!", avatar: "https://i.pravatar.cc/100?img=1" },
-  { id: 2, name: "Sarah Mitchell", review: "The trainers here actually care about your progress. Highly recommend!", avatar: "https://i.pravatar.cc/100?img=5" },
-  { id: 3, name: "Marcus Johnson", review: "State-of-the-art equipment and incredible atmosphere. Worth every penny.", avatar: "https://i.pravatar.cc/100?img=3" },
-  { id: 4, name: "Emily Chen", review: "Lost 30 pounds and gained so much confidence. Thank you MuscleTech!", avatar: "https://i.pravatar.cc/100?img=9" },
-  { id: 5, name: "David Rodriguez", review: "The best investment I've made for my health. Amazing community here.", avatar: "https://i.pravatar.cc/100?img=12" },
-  { id: 6, name: "Jessica Williams", review: "Clean facilities, friendly staff, and results that speak for themselves.", avatar: "https://i.pravatar.cc/100?img=23" },
-  { id: 7, name: "Ryan O'Connor", review: "From couch potato to marathon runner. This place changed my life!", avatar: "https://i.pravatar.cc/100?img=15" },
-  { id: 8, name: "Priya Sharma", review: "Personal training here is next level. My strength has doubled!", avatar: "https://i.pravatar.cc/100?img=25" },
-  { id: 9, name: "Michael Brown", review: "The motivation and energy in this gym is unmatched. Love it!", avatar: "https://i.pravatar.cc/100?img=18" },
-  { id: 10, name: "Amanda Foster", review: "Finally found a gym where I feel comfortable and challenged.", avatar: "https://i.pravatar.cc/100?img=29" },
-  { id: 11, name: "James Wilson", review: "Incredible results with their custom workout programs. Blown away!", avatar: "https://i.pravatar.cc/100?img=33" },
-  { id: 12, name: "Nicole Martinez", review: "The group classes are so fun and effective. Addicted to this place!", avatar: "https://i.pravatar.cc/100?img=44" },
-  { id: 13, name: "Kevin Lee", review: "Best equipment I've seen in any gym. Professional grade everything.", avatar: "https://i.pravatar.cc/100?img=52" },
-  { id: 14, name: "Rachel Green", review: "Down 4 dress sizes thanks to MuscleTech. Can't thank them enough!", avatar: "https://i.pravatar.cc/100?img=47" },
-  { id: 15, name: "Chris Taylor", review: "The atmosphere pushes you to be your best. No excuses here!", avatar: "https://i.pravatar.cc/100?img=57" },
-  { id: 16, name: "Sophia Anderson", review: "Trainers create personalized plans that actually work. Game changer!", avatar: "https://i.pravatar.cc/100?img=49" },
-  { id: 17, name: "Daniel Kim", review: "Built more muscle in 6 months than 2 years at my old gym.", avatar: "https://i.pravatar.cc/100?img=60" },
-  { id: 18, name: "Lauren Davis", review: "The supportive community here keeps me coming back. Love my gym family!", avatar: "https://i.pravatar.cc/100?img=32" },
-  { id: 19, name: "Tyler Jackson", review: "From skinny to strong. MuscleTech delivers on their promises.", avatar: "https://i.pravatar.cc/100?img=59" },
-  { id: 20, name: "Megan White", review: "Best decision I ever made joining this gym. Transformed inside and out!", avatar: "https://i.pravatar.cc/100?img=38" },
+  { id: 1, name: "Alex Thompson", review: "Completely transformed my physique in just 3 months. Best gym experience ever!", avatar: "https://i.pravatar.cc/100?img=1", role: "Beginner Bodybuilder" },
+  { id: 2, name: "Sarah Mitchell", review: "The trainers here actually care about your progress. Highly recommend!", avatar: "https://i.pravatar.cc/100?img=5", role: "Fitness Enthusiast" },
+  { id: 3, name: "Marcus Johnson", review: "State-of-the-art equipment and incredible atmosphere. Worth every penny.", avatar: "https://i.pravatar.cc/100?img=3", role: "Pro Athlete" },
+  { id: 4, name: "Emily Chen", review: "Lost 30 pounds and gained so much confidence. Thank you MuscleTech!", avatar: "https://i.pravatar.cc/100?img=9", role: "Cardio Lover" },
+  { id: 5, name: "David Rodriguez", review: "The best investment I've made for my health. Amazing community here.", avatar: "https://i.pravatar.cc/100?img=12", role: "Weightlifter" },
+  { id: 6, name: "Jessica Williams", review: "Clean facilities, friendly staff, and results that speak for themselves.", avatar: "https://i.pravatar.cc/100?img=23", role: "Yoga Instructor" },
+  { id: 7, name: "Ryan O'Connor", review: "From couch potato to marathon runner. This place changed my life!", avatar: "https://i.pravatar.cc/100?img=15", role: "Marathon Runner" },
+  { id: 8, name: "Priya Sharma", review: "Personal training here is next level. My strength has doubled!", avatar: "https://i.pravatar.cc/100?img=25", role: "Powerlifter" },
+  { id: 9, name: "Michael Brown", review: "The motivation and energy in this gym is unmatched. Love it!", avatar: "https://i.pravatar.cc/100?img=18", role: "CrossFit Athlete" },
+  { id: 10, name: "Amanda Foster", review: "Finally found a gym where I feel comfortable and challenged.", avatar: "https://i.pravatar.cc/100?img=29", role: "Member since 2022" },
+  { id: 11, name: "James Wilson", review: "Incredible results with their custom workout programs. Blown away!", avatar: "https://i.pravatar.cc/100?img=33", role: "Transformation Client" },
+  { id: 12, name: "Nicole Martinez", review: "The group classes are so fun and effective. Addicted to this place!", avatar: "https://i.pravatar.cc/100?img=44", role: "Group Class Fan" },
+  { id: 13, name: "Kevin Lee", review: "Best equipment I've seen in any gym. Professional grade everything.", avatar: "https://i.pravatar.cc/100?img=52", role: "Equipment Geek" },
+  { id: 14, name: "Rachel Green", review: "Down 4 dress sizes thanks to MuscleTech. Can't thank them enough!", avatar: "https://i.pravatar.cc/100?img=47", role: "Weight Loss Success" },
+  { id: 15, name: "Chris Taylor", review: "The atmosphere pushes you to be your best. No excuses here!", avatar: "https://i.pravatar.cc/100?img=57", role: "Daily Grinder" },
+  { id: 16, name: "Sophia Anderson", review: "Trainers create personalized plans that actually work. Game changer!", avatar: "https://i.pravatar.cc/100?img=49", role: "Personal Training Client" },
+  { id: 17, name: "Daniel Kim", review: "Built more muscle in 6 months than 2 years at my old gym.", avatar: "https://i.pravatar.cc/100?img=60", role: "Hypertrophy Focused" },
+  { id: 18, name: "Lauren Davis", review: "The supportive community here keeps me coming back. Love my gym family!", avatar: "https://i.pravatar.cc/100?img=32", role: "Community Member" },
+  { id: 19, name: "Tyler Jackson", review: "From skinny to strong. MuscleTech delivers on their promises.", avatar: "https://i.pravatar.cc/100?img=59", role: "Strength Trainer" },
+  { id: 20, name: "Megan White", review: "Best decision I ever made joining this gym. Transformed inside and out!", avatar: "https://i.pravatar.cc/100?img=38", role: "Wellness Advocate" },
 ];
 
 export default function Home() {
@@ -35,8 +36,11 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const [reviewIndex, setReviewIndex] = useState(0);
-  const [animationPhase, setAnimationPhase] = useState(0);
+
+  // Split reviews for columns
+  const firstColumn = reviews.slice(0, 7);
+  const secondColumn = reviews.slice(7, 14);
+  const thirdColumn = reviews.slice(14, 20);
 
   const videos = [
     { id: 0, src: "https://videos.pexels.com/video-files/4761563/4761563-uhd_1440_2560_25fps.mp4" },
@@ -59,19 +63,6 @@ export default function Home() {
     }, 3000);
     return () => clearInterval(interval);
   }, [isAutoPlaying, videos.length]);
-
-  useEffect(() => {
-    const animationInterval = setInterval(() => {
-      setAnimationPhase((prev) => {
-        if (prev >= 100) {
-          setReviewIndex((prevIndex) => (prevIndex + 1) % reviews.length);
-          return 0;
-        }
-        return prev + 2;
-      });
-    }, 50);
-    return () => clearInterval(animationInterval);
-  }, []);
 
   const handleVideoPlay = useCallback((index: number) => {
     videoRefs.current.forEach((video, i) => {
@@ -148,6 +139,37 @@ export default function Home() {
       document.removeEventListener("click", handleClick);
     };
   }, []);
+
+  const ReviewCard = ({ review }: { review: typeof reviews[0] }) => (
+    <div className="mx-3 mb-6 relative w-full p-6 rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900/90 to-black/90 backdrop-blur-sm shadow-xl hover:shadow-red-900/20 hover:border-red-900/50 transition-all duration-300">
+      <div className="flex items-start gap-4 mb-4">
+        <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-red-600 shadow-lg shadow-red-900/20 flex-shrink-0">
+          <Image
+            src={review.avatar}
+            alt={review.name}
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div>
+          <h4 className="text-white font-bold text-lg leading-tight">{review.name}</h4>
+          <p className="text-red-500 text-xs font-medium uppercase tracking-wider mt-0.5">{review.role}</p>
+        </div>
+      </div>
+      
+      <div className="flex gap-1 mb-3">
+        {[...Array(5)].map((_, i) => (
+          <svg key={i} className="w-4 h-4 text-yellow-500 fill-current drop-shadow-sm" viewBox="0 0 20 20">
+            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+          </svg>
+        ))}
+      </div>
+
+      <p className="text-gray-300 text-sm leading-relaxed">
+        "{review.review}"
+      </p>
+    </div>
+  );
 
   return (
     <>
@@ -412,85 +434,44 @@ export default function Home() {
         <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-red-600 to-transparent" />
 
         {/* Reviews Section */}
-        <section className="py-12 sm:py-16 md:py-20 bg-black md:bg-gradient-to-b md:from-black md:via-red-950/5 md:to-zinc-900">
-          <div className="container mx-auto px-4 sm:px-6">
+        <section className="py-12 sm:py-16 md:py-20 bg-black md:bg-gradient-to-b md:from-black md:via-red-950/5 md:to-zinc-900 overflow-hidden">
+          <div className="container mx-auto px-4 sm:px-6 mb-12">
             <h2 
-              className="text-4xl sm:text-5xl md:text-6xl text-white mb-12 text-center"
+              className="text-4xl sm:text-5xl md:text-6xl text-white text-center"
               style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
             >
               MEMBER <span className="text-red-600">REVIEWS</span>
             </h2>
           </div>
 
-          <div className="relative h-[450px] sm:h-[500px] md:h-[550px] overflow-hidden flex items-center justify-center" style={{ perspective: '1200px' }}>
-            <div className="relative w-[320px] sm:w-[380px] md:w-[420px] h-[280px] sm:h-[300px] md:h-[320px]" style={{ transformStyle: 'preserve-3d' }}>
-              {[0, 1, 2, 3, 4].map((stackPosition) => {
-                const actualIndex = (reviewIndex + stackPosition) % reviews.length;
-                const review = reviews[actualIndex];
-                
-                let translateY = stackPosition * 25;
-                let translateZ = -stackPosition * 40;
-                let scale = 1 - stackPosition * 0.04;
-                let opacity = 1 - stackPosition * 0.2;
-                
-                if (stackPosition === 0) {
-                  const progress = animationPhase / 100;
-                  translateY = -progress * 150;
-                  translateZ = progress * 100;
-                  scale = 1 + progress * 0.1;
-                  opacity = 1 - progress;
-                } else {
-                  const progress = animationPhase / 100;
-                  translateY = (stackPosition * 25) - (progress * 25);
-                  translateZ = (-stackPosition * 40) + (progress * 40);
-                  scale = (1 - stackPosition * 0.04) + (progress * 0.04);
-                  opacity = (1 - stackPosition * 0.2) + (progress * 0.2);
-                  opacity = Math.min(opacity, 1);
-                }
+          <div className="relative h-[600px] sm:h-[700px] w-full max-w-[1400px] mx-auto px-4 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-full">
+              {/* Column 1 */}
+              <div className="h-full">
+                <Marquee vertical autoFill pauseOnHover speed={30} className="h-full overflow-hidden">
+                  {firstColumn.map((review) => (
+                    <ReviewCard key={review.id} review={review} />
+                  ))}
+                </Marquee>
+              </div>
 
-                return (
-                  <div
-                    key={`${review.id}-${stackPosition}`}
-                    className="absolute inset-0"
-                    style={{
-                      transform: `translateY(${translateY}px) translateZ(${translateZ}px) scale(${scale})`,
-                      opacity: Math.max(0, opacity),
-                      zIndex: 10 - stackPosition,
-                      transformStyle: 'preserve-3d',
-                      transition: stackPosition === 0 && animationPhase === 0 ? 'none' : 'transform 0.05s linear, opacity 0.05s linear',
-                    }}
-                  >
-                    <div className="w-full h-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 rounded-2xl p-5 sm:p-6 border border-zinc-700/50 shadow-2xl shadow-black/60">
-                      <div className="flex items-center gap-4 mb-3">
-                        <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-red-600 flex-shrink-0">
-                          <Image
-                            src={review.avatar}
-                            alt={review.name}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div>
-                          <h4 className="text-white font-bold text-base sm:text-lg">{review.name}</h4>
-                          <div className="flex gap-0.5">
-                            {[...Array(5)].map((_, i) => (
-                              <svg key={i} className="w-4 h-4 text-yellow-500 fill-current" viewBox="0 0 20 20">
-                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                              </svg>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-gray-300 text-sm sm:text-base leading-relaxed italic">
-                        "{review.review}"
-                      </p>
-                      <div className="mt-2 flex justify-end">
-                        <div className="text-red-600/40 text-3xl sm:text-4xl font-serif">"</div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+              {/* Column 2 */}
+              <div className="hidden md:block h-full mt-10 md:mt-0">
+                <Marquee vertical autoFill pauseOnHover speed={50} className="h-full overflow-hidden">
+                  {secondColumn.map((review) => (
+                    <ReviewCard key={review.id} review={review} />
+                  ))}
+                </Marquee>
+              </div>
+
+              {/* Column 3 */}
+              <div className="hidden lg:block h-full">
+                <Marquee vertical autoFill pauseOnHover speed={40} className="h-full overflow-hidden">
+                  {thirdColumn.map((review) => (
+                    <ReviewCard key={review.id} review={review} />
+                  ))}
+                </Marquee>
+              </div>
             </div>
           </div>
         </section>
