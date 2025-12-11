@@ -106,7 +106,7 @@ export default function EquipmentPage() {
           className="text-white text-center text-lg"
           style={{ fontFamily: "'Caveat', cursive" }}
         >
-          developed by webForYou technologies
+          Developed by WebForYou Technologies
         </p>
       </div>
 
