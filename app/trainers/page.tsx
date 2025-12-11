@@ -7,13 +7,13 @@ import { useEffect, useState, useRef } from "react";
 const trainersData = [
   {
     id: 1,
-    name: "MIKE JOHNSON",
+    name: "RAJ SHARMA",
     specialty: "Strength & Conditioning",
     experience: "15 Years Experience",
   },
   {
     id: 2,
-    name: "SARAH WILLIAMS",
+    name: "YUGH SINGH",
     specialty: "Yoga & Flexibility",
     experience: "10 Years Experience",
   },
