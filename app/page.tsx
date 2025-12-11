@@ -4,6 +4,29 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { useEffect, useRef, useState, useCallback } from "react";
 
+const reviews = [
+  { id: 1, name: "Alex Thompson", review: "Completely transformed my physique in just 3 months. Best gym experience ever!", avatar: "https://i.pravatar.cc/100?img=1" },
+  { id: 2, name: "Sarah Mitchell", review: "The trainers here actually care about your progress. Highly recommend!", avatar: "https://i.pravatar.cc/100?img=5" },
+  { id: 3, name: "Marcus Johnson", review: "State-of-the-art equipment and incredible atmosphere. Worth every penny.", avatar: "https://i.pravatar.cc/100?img=3" },
+  { id: 4, name: "Emily Chen", review: "Lost 30 pounds and gained so much confidence. Thank you MuscleTech!", avatar: "https://i.pravatar.cc/100?img=9" },
+  { id: 5, name: "David Rodriguez", review: "The best investment I've made for my health. Amazing community here.", avatar: "https://i.pravatar.cc/100?img=12" },
+  { id: 6, name: "Jessica Williams", review: "Clean facilities, friendly staff, and results that speak for themselves.", avatar: "https://i.pravatar.cc/100?img=23" },
+  { id: 7, name: "Ryan O'Connor", review: "From couch potato to marathon runner. This place changed my life!", avatar: "https://i.pravatar.cc/100?img=15" },
+  { id: 8, name: "Priya Sharma", review: "Personal training here is next level. My strength has doubled!", avatar: "https://i.pravatar.cc/100?img=25" },
+  { id: 9, name: "Michael Brown", review: "The motivation and energy in this gym is unmatched. Love it!", avatar: "https://i.pravatar.cc/100?img=18" },
+  { id: 10, name: "Amanda Foster", review: "Finally found a gym where I feel comfortable and challenged.", avatar: "https://i.pravatar.cc/100?img=29" },
+  { id: 11, name: "James Wilson", review: "Incredible results with their custom workout programs. Blown away!", avatar: "https://i.pravatar.cc/100?img=33" },
+  { id: 12, name: "Nicole Martinez", review: "The group classes are so fun and effective. Addicted to this place!", avatar: "https://i.pravatar.cc/100?img=44" },
+  { id: 13, name: "Kevin Lee", review: "Best equipment I've seen in any gym. Professional grade everything.", avatar: "https://i.pravatar.cc/100?img=52" },
+  { id: 14, name: "Rachel Green", review: "Down 4 dress sizes thanks to MuscleTech. Can't thank them enough!", avatar: "https://i.pravatar.cc/100?img=47" },
+  { id: 15, name: "Chris Taylor", review: "The atmosphere pushes you to be your best. No excuses here!", avatar: "https://i.pravatar.cc/100?img=57" },
+  { id: 16, name: "Sophia Anderson", review: "Trainers create personalized plans that actually work. Game changer!", avatar: "https://i.pravatar.cc/100?img=49" },
+  { id: 17, name: "Daniel Kim", review: "Built more muscle in 6 months than 2 years at my old gym.", avatar: "https://i.pravatar.cc/100?img=60" },
+  { id: 18, name: "Lauren Davis", review: "The supportive community here keeps me coming back. Love my gym family!", avatar: "https://i.pravatar.cc/100?img=32" },
+  { id: 19, name: "Tyler Jackson", review: "From skinny to strong. MuscleTech delivers on their promises.", avatar: "https://i.pravatar.cc/100?img=59" },
+  { id: 20, name: "Megan White", review: "Best decision I ever made joining this gym. Transformed inside and out!", avatar: "https://i.pravatar.cc/100?img=38" },
+];
+
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState(1);
   const [isMd, setIsMd] = useState(false);
@@ -12,6 +35,7 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const [reviewIndex, setReviewIndex] = useState(0);
 
   const videos = [
     { id: 0, src: "https://videos.pexels.com/video-files/4761563/4761563-uhd_1440_2560_25fps.mp4" },
@@ -34,6 +58,13 @@ export default function Home() {
     }, 3000);
     return () => clearInterval(interval);
   }, [isAutoPlaying, videos.length]);
+
+  useEffect(() => {
+    const reviewInterval = setInterval(() => {
+      setReviewIndex((prev) => (prev + 1) % reviews.length);
+    }, 2500);
+    return () => clearInterval(reviewInterval);
+  }, []);
 
   const handleVideoPlay = useCallback((index: number) => {
     videoRefs.current.forEach((video, i) => {
@@ -367,6 +398,78 @@ export default function Home() {
                 className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${index === activeIndex ? 'bg-red-600 w-8' : 'bg-zinc-600 hover:bg-zinc-500'}`}
               />
             ))}
+          </div>
+        </section>
+
+        {/* Section Divider Line */}
+        <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+
+        {/* Reviews Section */}
+        <section className="py-12 sm:py-16 md:py-20 bg-black md:bg-gradient-to-b md:from-black md:via-red-950/5 md:to-zinc-900">
+          <div className="container mx-auto px-4 sm:px-6">
+            <h2 
+              className="text-4xl sm:text-5xl md:text-6xl text-white mb-12 text-center"
+              style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}
+            >
+              MEMBER <span className="text-red-600">REVIEWS</span>
+            </h2>
+          </div>
+
+          <div className="relative h-[500px] sm:h-[550px] md:h-[600px] overflow-hidden flex items-center justify-center perspective-[1000px]">
+            <div className="relative w-[300px] sm:w-[350px] md:w-[400px] h-[400px] sm:h-[450px] md:h-[500px]">
+              {reviews.map((review, index) => {
+                const position = (index - reviewIndex + reviews.length) % reviews.length;
+                const isVisible = position < 5;
+                
+                const translateY = position * 20;
+                const scale = 1 - position * 0.05;
+                const opacity = position === 0 ? 1 : position < 5 ? 0.9 - position * 0.15 : 0;
+                const zIndex = reviews.length - position;
+                const rotateX = position * 2;
+
+                return (
+                  <div
+                    key={review.id}
+                    className="absolute inset-0 transition-all duration-700 ease-out"
+                    style={{
+                      transform: `translateY(${-translateY}px) scale(${scale}) rotateX(${rotateX}deg)`,
+                      opacity: isVisible ? opacity : 0,
+                      zIndex,
+                      transformStyle: 'preserve-3d',
+                    }}
+                  >
+                    <div className="w-full h-auto bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 rounded-2xl p-6 sm:p-8 border border-zinc-700/50 shadow-2xl shadow-black/50">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-red-600">
+                          <Image
+                            src={review.avatar}
+                            alt={review.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-bold text-lg sm:text-xl">{review.name}</h4>
+                          <div className="flex gap-1">
+                            {[...Array(5)].map((_, i) => (
+                              <svg key={i} className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 fill-current" viewBox="0 0 20 20">
+                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                              </svg>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-gray-300 text-base sm:text-lg leading-relaxed italic">
+                        "{review.review}"
+                      </p>
+                      <div className="mt-4 flex justify-end">
+                        <div className="text-red-600/50 text-4xl sm:text-5xl font-serif">"</div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </section>
       </main>
