@@ -8,13 +8,18 @@ import Image from "next/image";
 import JoinNowModal from "./JoinNowModal";
 import MemberLoginModal from "./MemberLoginModal";
 import { useMemberAuth } from "@/lib/auth/member-context";
-import { User, LogOut, ShieldCheck } from "lucide-react";
+import { User, LogOut, ShieldCheck, Sparkles } from "lucide-react";
 
 const navLinks = [
+  { href: "/", label: "Home" },
   { href: "/fitness", label: "Fitness" },
   { href: "/amenities", label: "Amenities & Services" },
   { href: "/trainers", label: "Trainers" },
   { href: "/equipment", label: "Equipment" },
+];
+
+const memberOnlyLinks = [
+  { href: "/features", label: "Features" },
 ];
 
 export default function Navbar() {
@@ -80,28 +85,51 @@ export default function Navbar() {
             {/* Desktop Nav Links */}
             <div className="hidden md:flex items-center space-x-6">
               {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "text-sm font-medium transition-colors duration-300 relative group",
-                    pathname === link.href
-                      ? "text-red-600"
-                      : "text-gray-300 hover:text-red-600"
-                  )}
-                >
-                  {link.label}
-                  <span
+                  <Link
+                    key={link.href}
+                    href={link.href}
                     className={cn(
-                      "absolute -bottom-1 left-0 h-0.5 bg-red-600 transition-all duration-300",
+                      "text-sm font-medium transition-colors duration-300 relative group",
                       pathname === link.href
-                        ? "w-full"
-                        : "w-0 group-hover:w-full"
+                        ? "text-red-600"
+                        : "text-gray-300 hover:text-red-600"
                     )}
-                  />
-                </Link>
-              ))}
-            </div>
+                  >
+                    {link.label}
+                    <span
+                      className={cn(
+                        "absolute -bottom-1 left-0 h-0.5 bg-red-600 transition-all duration-300",
+                        pathname === link.href
+                          ? "w-full"
+                          : "w-0 group-hover:w-full"
+                      )}
+                    />
+                  </Link>
+                ))}
+                {isAuthenticated && memberOnlyLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                      "text-sm font-medium transition-colors duration-300 relative group flex items-center gap-1",
+                      pathname === link.href
+                        ? "text-red-600"
+                        : "text-gray-300 hover:text-red-600"
+                    )}
+                  >
+                    <Sparkles className="h-3.5 w-3.5" />
+                    {link.label}
+                    <span
+                      className={cn(
+                        "absolute -bottom-1 left-0 h-0.5 bg-red-600 transition-all duration-300",
+                        pathname === link.href
+                          ? "w-full"
+                          : "w-0 group-hover:w-full"
+                      )}
+                    />
+                  </Link>
+                ))}
+              </div>
 
             {/* Desktop Right Actions */}
               <div className="hidden md:flex items-center space-x-3">
@@ -236,22 +264,39 @@ export default function Navbar() {
         >
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-col space-y-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "text-lg font-medium py-3 border-b border-zinc-800 transition-colors duration-300",
-                    pathname === link.href
-                      ? "text-red-600"
-                      : "text-gray-300 hover:text-red-600"
-                  )}
-                >
-                  {link.label}
-                </Link>
-              ))}
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                      "text-lg font-medium py-3 border-b border-zinc-800 transition-colors duration-300",
+                      pathname === link.href
+                        ? "text-red-600"
+                        : "text-gray-300 hover:text-red-600"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
 
-                {/* Staff Link */}
+                  {/* Features - Members Only */}
+                  {isAuthenticated && memberOnlyLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={cn(
+                        "flex items-center gap-2 text-lg font-medium py-3 border-b border-zinc-800 transition-colors duration-300",
+                        pathname === link.href
+                          ? "text-red-600"
+                          : "text-gray-300 hover:text-red-600"
+                      )}
+                    >
+                      <Sparkles className="h-5 w-5" />
+                      {link.label}
+                    </Link>
+                  ))}
+
+                  {/* Staff Link */}
                 {!isAuthenticated && (
                   <Link
                     href="/admin"
