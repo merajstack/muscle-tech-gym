@@ -160,7 +160,7 @@ export default function AdminDashboard() {
 
   const handleRemind = (member: Member) => {
     const message = encodeURIComponent(
-      `Dear ${member.full_name}, your membership at Muscle Tech Premium Gym has expired. Please renew to continue your fitness journey!`
+      `Hi ${member.full_name}, your Muscle Tech gym membership has expired. Please renew it by paying ₹${Number(member.payment_amount).toLocaleString()}. Thank you.`
     );
     window.open(`https://wa.me/91${member.mobile}?text=${message}`, "_blank");
   };
@@ -521,15 +521,16 @@ export default function AdminDashboard() {
                                   <span>Remove</span>
                                 </button>
                               )}
-                              {expired && (
-                              <button
-                                onClick={() => handleRemind(member)}
-                                className="flex items-center gap-1 text-red-600 hover:text-red-500 font-medium transition-colors"
-                              >
-                                <MessageCircle className="h-4 w-4" />
-                                <span className="text-sm">Remind</span>
-                              </button>
-                            )}
+                                {expired && (
+                                <button
+                                  onClick={() => handleRemind(member)}
+                                  className="flex items-center gap-1 text-green-500 hover:text-green-400 font-medium transition-colors"
+                                  title="Send WhatsApp reminder"
+                                >
+                                  <MessageCircle className="h-4 w-4" />
+                                  <span className="text-sm">WhatsApp</span>
+                                </button>
+                              )}
                           </div>
                         </td>
                       </tr>
