@@ -36,7 +36,6 @@ export default function JoinNowModal({ isOpen, onClose }: JoinNowModalProps) {
     branch_id: "",
     membership_type: "1month",
     startDate: new Date().toISOString().split("T")[0],
-    paymentAmount: "",
   });
 
   useEffect(() => {
@@ -65,16 +64,16 @@ export default function JoinNowModal({ isOpen, onClose }: JoinNowModalProps) {
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            full_name: formData.name,
-            mobile: formData.phone,
-            branch_id: formData.branch_id,
-            membership_type: selectedPlan.label,
-            start_date: formData.startDate,
-            end_date: getEndDate(),
-            payment_amount: parseFloat(formData.paymentAmount),
-            payment_mode: paymentMethod,
-          }),
+        body: JSON.stringify({
+          full_name: formData.name,
+          mobile: formData.phone,
+          branch_id: formData.branch_id,
+          membership_type: selectedPlan.label,
+          start_date: formData.startDate,
+          end_date: getEndDate(),
+          payment_amount: selectedPlan.price,
+          payment_mode: paymentMethod,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -90,10 +89,9 @@ export default function JoinNowModal({ isOpen, onClose }: JoinNowModalProps) {
   };
 
   const handleUPIPayment = () => {
-    const amount = formData.paymentAmount ? parseFloat(formData.paymentAmount) : selectedPlan.price;
     const upiId = "muscle_tech@upi";
-    const upiLink = `upi://pay?pa=${upiId}&pn=MuscleTech%20Gym&am=${amount}&tn=Gym%20Membership&cu=INR`;
-    window.open(upiLink, "_self");
+    const upiLink = `upi://pay?pa=${upiId}&pn=MuscleTech%20Gym&am=${selectedPlan.price}&tn=Gym%20Membership&cu=INR`;
+    window.open(upiLink, "_blank");
     setHasPaid(true);
   };
 
@@ -108,7 +106,6 @@ export default function JoinNowModal({ isOpen, onClose }: JoinNowModalProps) {
       branch_id: "",
       membership_type: "1month",
       startDate: new Date().toISOString().split("T")[0],
-      paymentAmount: "",
     });
   };
 
@@ -219,33 +216,20 @@ export default function JoinNowModal({ isOpen, onClose }: JoinNowModalProps) {
                   </div>
                 </div>
 
-                  <div>
-                    <label className="text-xs font-semibold uppercase tracking-wider text-gray-400">Start Date</label>
-                    <input
-                      type="date"
-                      required
-                      value={formData.startDate}
-                      onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                      className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white outline-none focus:border-red-600 transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-semibold uppercase tracking-wider text-gray-400">Payment Amount (₹)</label>
-                    <input
-                      type="number"
-                      required
-                      min="1"
-                      value={formData.paymentAmount}
-                      onChange={(e) => setFormData({ ...formData, paymentAmount: e.target.value })}
-                      className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white outline-none focus:border-red-600 transition-colors"
-                      placeholder="Enter payment amount"
-                    />
-                  </div>
+                <div>
+                  <label className="text-xs font-semibold uppercase tracking-wider text-gray-400">Start Date</label>
+                  <input
+                    type="date"
+                    required
+                    value={formData.startDate}
+                    onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                    className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white outline-none focus:border-red-600 transition-colors"
+                  />
+                </div>
               </div>
 
               <button
-                disabled={!formData.name || !formData.phone || !formData.branch_id || !formData.paymentAmount}
+                disabled={!formData.name || !formData.phone || !formData.branch_id}
                 onClick={() => { setError(""); setStep(2); }}
                 className="w-full rounded-lg bg-red-600 py-3 font-bold text-white transition-all hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -264,9 +248,9 @@ export default function JoinNowModal({ isOpen, onClose }: JoinNowModalProps) {
                   &larr; Back to details
                 </button>
                 <h2 className="text-2xl font-bold text-white">Payment Method</h2>
-                  <p className="text-sm text-gray-400">
-                    Pay ₹{formData.paymentAmount ? parseFloat(formData.paymentAmount).toLocaleString() : selectedPlan.price.toLocaleString()} for {selectedPlan.label}
-                  </p>
+                <p className="text-sm text-gray-400">
+                  Pay ₹{selectedPlan.price.toLocaleString()} for {selectedPlan.label}
+                </p>
               </div>
 
               {error && (

@@ -160,7 +160,7 @@ export default function AdminDashboard() {
 
   const handleRemind = (member: Member) => {
     const message = encodeURIComponent(
-      `Hi ${member.full_name}, your Muscle Tech gym membership has expired. Please renew it by paying ₹${Number(member.payment_amount).toLocaleString()}. Thank you.`
+      `Dear ${member.full_name}, your membership at Muscle Tech Premium Gym has expired. Please renew to continue your fitness journey!`
     );
     window.open(`https://wa.me/91${member.mobile}?text=${message}`, "_blank");
   };
@@ -410,13 +410,14 @@ export default function AdminDashboard() {
                   <th className="px-5 py-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Period</th>
                   <th className="px-5 py-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Amount</th>
                   <th className="px-5 py-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Payment</th>
-                  <th className="px-5 py-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Actions</th>
+                    <th className="px-5 py-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Notification</th>
+                    <th className="px-5 py-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800">
                 {filteredMembers.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-6 py-12 text-center text-zinc-500">
+                      <td colSpan={8} className="px-6 py-12 text-center text-zinc-500">
                       No members found.
                     </td>
                   </tr>
@@ -482,8 +483,22 @@ export default function AdminDashboard() {
                           </span>
                         </td>
                         <td className="px-5 py-4 whitespace-nowrap">
-                          <div className="flex items-center gap-2">
-                            {member.status === "pending" && (
+                          <button
+                            onClick={() => {
+                              const message = encodeURIComponent(
+                                `Hi ${member.full_name}, your Muscle Tech Gym membership has expired. Please renew it by paying ₹${Number(member.payment_amount).toLocaleString()}. Thank you.`
+                              );
+                              window.open(`https://wa.me/91${member.mobile}?text=${message}`, "_blank");
+                            }}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition-colors"
+                          >
+                            <MessageCircle className="h-4 w-4" />
+                            WhatsApp
+                          </button>
+                        </td>
+                        <td className="px-5 py-4 whitespace-nowrap">
+                            <div className="flex items-center gap-2">
+                              {member.status === "pending" && (
                               <>
                                 <button
                                   onClick={() => handleApprove(member.id, "approve")}
@@ -521,16 +536,15 @@ export default function AdminDashboard() {
                                   <span>Remove</span>
                                 </button>
                               )}
-                                {expired && (
-                                <button
-                                  onClick={() => handleRemind(member)}
-                                  className="flex items-center gap-1 text-green-500 hover:text-green-400 font-medium transition-colors"
-                                  title="Send WhatsApp reminder"
-                                >
-                                  <MessageCircle className="h-4 w-4" />
-                                  <span className="text-sm">WhatsApp</span>
-                                </button>
-                              )}
+                              {expired && (
+                              <button
+                                onClick={() => handleRemind(member)}
+                                className="flex items-center gap-1 text-red-600 hover:text-red-500 font-medium transition-colors"
+                              >
+                                <MessageCircle className="h-4 w-4" />
+                                <span className="text-sm">Remind</span>
+                              </button>
+                            )}
                           </div>
                         </td>
                       </tr>

@@ -1,11 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
+import { createHash } from "crypto";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+function hashPassword(password: string): string {
+  return createHash("sha256").update(password).digest("hex");
+}
 
 export async function POST(req: NextRequest) {
-  const { mobile } = await req.json();
+  const { mobile, password } = await req.json();
 
-  if (!mobile) {
-    return NextResponse.json({ error: "Mobile number is required" }, { status: 400 });
+  if (!mobile || !password) {
+    return NextResponse.json({ error: "Mobile and password are required" }, { status: 400 });
   }
 
   const { data: member, error } = await supabase
@@ -24,6 +34,19 @@ export async function POST(req: NextRequest) {
 
   if (new Date(member.end_date) < new Date()) {
     return NextResponse.json({ error: "Your membership has expired. Please renew." }, { status: 403 });
+  }
+
+  // First login: no password set yet
+  if (!member.password_hash) {
+    return NextResponse.json({
+      needs_password: true,
+      member_name: member.full_name,
+    });
+  }
+
+  // Verify password
+  if (member.password_hash !== hashPassword(password)) {
+    return NextResponse.json({ error: "Incorrect password" }, { status: 401 });
   }
 
   return NextResponse.json({
